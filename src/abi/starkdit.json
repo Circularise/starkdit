@@ -34,6 +34,18 @@
     "type": "struct"
   },
   {
+    "inputs": [],
+    "name": "get_root",
+    "outputs": [
+      {
+        "name": "root_hash",
+        "type": "Uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "name": "post_body",

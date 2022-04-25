@@ -1,12 +1,26 @@
-import { Container, Flex, Heading, VStack } from "@chakra-ui/react";
+import { Container, Flex, Heading, Textarea } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import { PostCard } from "~/components/UI";
+import * as React from "react";
 
 const Home: NextPage = () => {
+  const [newPostContent, setNewPostContent] = React.useState("");
   return (
     <div>
       <Container maxW="3xl" pt="3rem">
-        <Heading as="h1" mb="1.5rem">
+        <Textarea
+          resize="vertical"
+          height="10rem"
+          focusBorderColor="brand.tertiary"
+          bgColor="black"
+          borderColor="grey.grey3"
+          _hover={{
+            borderColor: "grey.grey4",
+          }}
+          value={newPostContent}
+          onChange={(e) => setNewPostContent(e.target.value)}
+        />
+        <Heading as="h1" mt="3rem" mb="1.5rem">
           Freshest posts
         </Heading>
         <Flex direction="column" gap="2rem">

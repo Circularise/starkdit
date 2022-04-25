@@ -3,7 +3,7 @@ import { Abi } from "starknet";
 
 import StarkditAbi from "~/abi/starkdit.json";
 
-export function useCounterContract() {
+export function useStarkditContract() {
   return useContract({
     abi: StarkditAbi as Abi,
     address: "0xTODO",

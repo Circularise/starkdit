@@ -1,12 +1,13 @@
 import { Container, Flex, Heading, Textarea } from "@chakra-ui/react";
 import type { NextPage } from "next";
-import { PostCard } from "~/components/UI";
+import { PostCard, Sidebar } from "~/components/UI";
 import * as React from "react";
 
 const Home: NextPage = () => {
   const [newPostContent, setNewPostContent] = React.useState("");
   return (
     <div>
+      <Sidebar />
       <Container maxW="3xl" pt="3rem">
         <Textarea
           resize="vertical"

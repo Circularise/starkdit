@@ -1,6 +1,7 @@
 import { Container, Flex, Heading } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import { AddPostForm, PostCard, PostHeader, Sidebar } from "~/components/UI";
+import AddCommentForm from "~/components/UI/AddCommentForm";
 
 const Post: NextPage = () => {
   return (
@@ -19,7 +20,7 @@ const Post: NextPage = () => {
           body={`Of course she is, this wasn't a real question`}
           blockNumber={0}
         />
-        <AddPostForm />
+        <AddCommentForm />
       </Container>
     </div>
   );

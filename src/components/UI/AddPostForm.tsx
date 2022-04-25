@@ -27,6 +27,7 @@ const AddPostForm = () => {
       <Input
         focusBorderColor="brand.tertiary"
         bgColor="black"
+        borderRadius="lg"
         borderColor="grey.grey3"
         _hover={{
           borderColor: "grey.grey4",
@@ -49,6 +50,7 @@ const AddPostForm = () => {
         height="10rem"
         focusBorderColor="brand.tertiary"
         bgColor="black"
+        borderRadius="lg"
         borderColor="grey.grey3"
         _hover={{
           borderColor: "grey.grey4",

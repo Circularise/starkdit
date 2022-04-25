@@ -1,5 +1,6 @@
 import { Box, Heading, Flex, Text } from "@chakra-ui/react";
 import { Post } from "~/schema/forum_structs";
+import DepthBox from "./DepthBox";
 import ReplyNumber from "./ReplyNumber";
 
 const PostCard = ({ author, title, body, blockNumber }: Post) => {
@@ -29,19 +30,7 @@ const PostCard = ({ author, title, body, blockNumber }: Post) => {
           width="24px"
         />
         <Box>{author}</Box>
-        <Flex
-          ml="auto"
-          p="0.5rem 1.125rem"
-          bgColor="grey.grey3"
-          borderRadius="2xl"
-          fontWeight="bold"
-          fontSize="lg"
-          align="center"
-          gap="0.375rem"
-        >
-          <Box>#</Box>
-          <Box>{blockNumber}</Box>
-        </Flex>
+        <DepthBox depth={blockNumber} />
       </Flex>
       <Heading as="h3" fontSize="md">
         {title}

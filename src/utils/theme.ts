@@ -7,6 +7,7 @@ const colors = {
     grey2: "#38383C",
     grey3: "#5A595C",
     grey4: "#828282",
+    grey5: "#E0E0E0",
   },
   brand: {
     tertiary: "#566EEF",

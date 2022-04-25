@@ -1,31 +1,19 @@
-import { useStarknetCall } from "@starknet-react/core";
+import { Container, Heading } from "@chakra-ui/react";
 import type { NextPage } from "next";
-import { useMemo } from "react";
-import { toBN } from "starknet/dist/utils/number";
-import { ConnectWallet } from "~/components/ConnectWallet";
-import { IncrementCounter } from "~/components/IncrementCounter";
-import { TransactionList } from "~/components/TransactionList";
-import { useCounterContract } from "~/hooks/counter";
+import { PostCard } from "~/components/UI";
 
 const Home: NextPage = () => {
-  const { contract: counter } = useCounterContract();
-
-  const { data: counterResult } = useStarknetCall({
-    contract: counter,
-    method: "counter",
-    args: [],
-  });
-
-  const counterValue = useMemo(() => {
-    if (counterResult && counterResult.length > 0) {
-      const value = toBN(counterResult[0]);
-      return value.toString(10);
-    }
-  }, [counterResult]);
-
   return (
     <div>
-      <h2>Posts</h2>
+      <Container maxW="3xl">
+        <Heading as="h1">Posts</Heading>
+        <PostCard
+          author="Circularise"
+          title={`Isn't our designer Loes the best ever`}
+          body={`Of course she is, this wasn't a real question`}
+          blockNumber={1234}
+        />
+      </Container>
     </div>
   );
 };

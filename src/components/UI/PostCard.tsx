@@ -21,7 +21,19 @@ const PostCard = ({ author, title, body, blockNumber }: Post) => {
           width="24px"
         />
         <Box>{author}</Box>
-        <Box ml="auto">#{blockNumber}</Box>
+        <Flex
+          ml="auto"
+          p="0.5rem 1.125rem"
+          bgColor="grey.grey3"
+          borderRadius="2xl"
+          fontWeight="bold"
+          fontSize="lg"
+          align="center"
+          gap="0.375rem"
+        >
+          <Box>#</Box>
+          <Box>{blockNumber}</Box>
+        </Flex>
       </Flex>
       <Heading as="h2" fontSize="md" mt="1rem">
         {title}

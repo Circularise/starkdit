@@ -7,7 +7,7 @@ const Home: NextPage = () => {
     <div>
       <Container maxW="3xl">
         <Heading as="h1" mb="1.5rem">
-          Posts
+          Freshest posts
         </Heading>
         <Flex direction="column" gap="2rem">
           <PostCard

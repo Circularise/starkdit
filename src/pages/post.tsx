@@ -1,6 +1,6 @@
-import { Container, Flex, Heading } from "@chakra-ui/react";
+import { Container } from "@chakra-ui/react";
 import type { NextPage } from "next";
-import { AddPostForm, PostCard, PostHeader, Sidebar } from "~/components/UI";
+import { PostHeader, Sidebar } from "~/components/UI";
 import AddCommentForm from "~/components/UI/AddCommentForm";
 
 const Post: NextPage = () => {

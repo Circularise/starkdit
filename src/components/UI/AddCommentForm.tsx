@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Input,
-  Text,
-  Textarea,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Text, Textarea } from "@chakra-ui/react";
 import * as React from "react";
 import DepthBox from "./DepthBox";
 
@@ -19,7 +11,7 @@ const AddCommentForm = () => {
   };
 
   return (
-    <Flex align="flex-start" gap="1rem">
+    <Flex align="flex-start" gap="1rem" mt="1rem" mb="2rem">
       <Box flexShrink={1} mt="2.5rem">
         <DepthBox depth={36} />
       </Box>

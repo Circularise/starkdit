@@ -10,7 +10,13 @@ const AddPostForm = () => {
   };
 
   return (
-    <Flex direction="column" gap="0.5rem" as="form" onSubmit={handleSubmit}>
+    <Flex
+      direction="column"
+      gap="0.5rem"
+      mt="3rem"
+      as="form"
+      onSubmit={handleSubmit}
+    >
       <Text mb="0.5rem">Create your post as: (user token id TODO)</Text>
       <Text
         color="grey.grey5"

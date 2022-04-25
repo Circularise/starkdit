@@ -9,7 +9,6 @@ const Sidebar = () => {
       bottom="0"
       left="0"
       height="100vh"
-      bgColor="black"
       width="120px"
       pt="1.5rem"
     >

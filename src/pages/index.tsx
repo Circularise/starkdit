@@ -5,7 +5,7 @@ import { PostCard } from "~/components/UI";
 const Home: NextPage = () => {
   return (
     <div>
-      <Container maxW="3xl">
+      <Container maxW="3xl" pt="3rem">
         <Heading as="h1" mb="1.5rem">
           Freshest posts
         </Heading>

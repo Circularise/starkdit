@@ -13,7 +13,7 @@ const PostCard = ({ author, title, body, blockNumber }: Post) => {
       borderRadius="lg"
       width="100%"
     >
-      <Flex gap="1rem" width="100%">
+      <Flex gap="1rem" width="100%" align="center">
         <Box
           bgColor={"silver"}
           borderRadius="full"
@@ -35,11 +35,11 @@ const PostCard = ({ author, title, body, blockNumber }: Post) => {
           <Box>{blockNumber}</Box>
         </Flex>
       </Flex>
-      <Heading as="h2" fontSize="md" mt="1rem">
+      <Heading as="h2" fontSize="md" mt="0.5rem">
         {title}
       </Heading>
       <Box>{body}</Box>
-      <Flex color="brand.tertiary" gap="0.75rem">
+      <Flex color="brand.tertiary" gap="0.75rem" mt="0.5rem">
         <Box transform="rotate(180deg) translateY(10%)">
           <ArrowBack strokeWidth={2} size={24} />
         </Box>

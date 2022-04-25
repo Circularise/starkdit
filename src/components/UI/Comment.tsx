@@ -13,7 +13,7 @@ const Comment = ({ author, body, blockNumber }: Omit<Post, "title">) => {
           width="24px"
         />
         <Box>{author}</Box>
-        <DepthBox depth={blockNumber} />
+        <DepthBox depth={blockNumber} variant="small" />
       </Flex>
       <Container maxW="xl" ml="0" pl="0">
         <Text fontSize="1rem">{body}</Text>

@@ -1,4 +1,4 @@
-import { Post, Thread, Threads, Root } from "./../schema/forum_structs"
+import { Posts, Post, Thread, Threads, Root } from "./../schema/forum_structs"
 
 export function getRootIdFromStarknet() {
     // use contract abi to get root from starknet
@@ -34,6 +34,16 @@ export function getThreadFromIPFS(threadId: string): Thread {
     }
 
     return new Thread(thread.id, thread.postId, thread.count);
+}
+
+export function getPostsFromIPFS(postsId: string): Posts {
+    // fetch thread from ipfs
+    const posts = {
+        postId: "0xPostsIPFSId",
+        count: 0
+    }
+
+    return new Posts(posts.postId, posts.count)
 }
 
 export function getPostFromIPFS(postId: string): Post {

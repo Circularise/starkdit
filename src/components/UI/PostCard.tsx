@@ -8,12 +8,12 @@ const PostCard = ({ author, title, body, blockNumber }: Post) => {
       direction="column"
       align="flex-start"
       p="20px"
-      gap="1rem"
+      gap="0.5rem"
       bgColor="grey.grey2"
       borderRadius="lg"
       width="100%"
     >
-      <Flex gap="1rem" width="100%" align="center">
+      <Flex gap="1rem" width="100%" align="flex-start">
         <Box
           bgColor={"silver"}
           borderRadius="full"
@@ -35,11 +35,11 @@ const PostCard = ({ author, title, body, blockNumber }: Post) => {
           <Box>{blockNumber}</Box>
         </Flex>
       </Flex>
-      <Heading as="h2" fontSize="md" mt="0.5rem">
+      <Heading as="h2" fontSize="md">
         {title}
       </Heading>
       <Box>{body}</Box>
-      <Flex color="brand.tertiary" gap="0.75rem" mt="0.5rem">
+      <Flex color="brand.tertiary" gap="0.75rem" mt="1rem">
         <Box transform="rotate(180deg) translateY(10%)">
           <ArrowBack strokeWidth={2} size={24} />
         </Box>

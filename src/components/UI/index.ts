@@ -4,3 +4,4 @@ export { default as AddPostForm } from "./AddPostForm";
 export { default as ReplyNumber } from "./ReplyNumber";
 export { default as PostHeader } from "./PostHeader";
 export { default as DepthBox } from "./DepthBox";
+export { default as Comment } from "./Comment";

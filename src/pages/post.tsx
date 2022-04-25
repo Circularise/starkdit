@@ -1,6 +1,6 @@
-import { Container } from "@chakra-ui/react";
+import { Container, Flex } from "@chakra-ui/react";
 import type { NextPage } from "next";
-import { PostHeader, Sidebar } from "~/components/UI";
+import { Comment, PostHeader, Sidebar } from "~/components/UI";
 import AddCommentForm from "~/components/UI/AddCommentForm";
 
 const Post: NextPage = () => {
@@ -21,6 +21,20 @@ const Post: NextPage = () => {
           blockNumber={0}
         />
         <AddCommentForm />
+        <Flex direction="column" gap="2rem">
+          <Comment
+            author="User token ID"
+            body="Nowadays, it’s an amazing time to be a designer. We learn from our peers, from our mentors, and from all the resources available to us today. That’s why you will never be short of excellent resources on the web to learn and Practise from.
+            "
+            blockNumber={0}
+          />
+          <Comment
+            author="User token ID"
+            body="Nowadays, it’s an amazing time to be a designer. We learn from our peers, from our mentors, and from all the resources available to us today. That’s why you will never be short of excellent resources on the web to learn and Practise from.
+            "
+            blockNumber={1}
+          />
+        </Flex>
       </Container>
     </div>
   );

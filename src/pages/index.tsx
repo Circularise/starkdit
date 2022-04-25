@@ -1,4 +1,4 @@
-import { Container, Flex, Heading, Textarea } from "@chakra-ui/react";
+import { Container, Flex, Heading } from "@chakra-ui/react";
 import type { NextPage } from "next";
 import { AddPostForm, PostCard, Sidebar } from "~/components/UI";
 

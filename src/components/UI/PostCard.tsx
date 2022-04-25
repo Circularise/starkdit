@@ -1,6 +1,7 @@
 import { VStack, Box, Heading, Flex, Text } from "@chakra-ui/react";
 import { ArrowBack, ArrowForward } from "akar-icons";
 import { Post } from "~/schema/forum_structs";
+import ReplyNumber from "./ReplyNumber";
 
 const PostCard = ({ author, title, body, blockNumber }: Post) => {
   return (
@@ -43,16 +44,11 @@ const PostCard = ({ author, title, body, blockNumber }: Post) => {
           <Box>{blockNumber}</Box>
         </Flex>
       </Flex>
-      <Heading as="h2" fontSize="md">
+      <Heading as="h3" fontSize="md">
         {title}
       </Heading>
       <Box>{body}</Box>
-      <Flex color="brand.tertiary" gap="0.75rem" mt="1rem">
-        <Box transform="rotate(180deg) translateY(10%)">
-          <ArrowBack strokeWidth={2} size={24} />
-        </Box>
-        <Text fontWeight={"bold"}>35 replies</Text>
-      </Flex>
+      <ReplyNumber replyNumber={34} />
     </Flex>
   );
 };

@@ -76,6 +76,26 @@ export class Root {
     }
 }
 
+export class Posts {
+    postId!: string;
+    count!: number;
+
+    postCache: Post | undefined
+
+    constructor(postId: string, count: number) {
+        this.postId = postId
+        this.count = count
+    }
+
+    getPost(): Post {
+        if (this.postCache === undefined) {
+            this.postCache = getPostFromIPFS(this.postId)
+        }
+
+        return this.postCache!
+    }
+}
+
 export interface Post {
     author: string;
     title: string;

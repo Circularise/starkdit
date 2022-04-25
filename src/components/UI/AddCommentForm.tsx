@@ -11,7 +11,7 @@ const AddCommentForm = () => {
   };
 
   return (
-    <Flex align="flex-start" gap="1rem" mt="1rem" mb="2rem">
+    <Flex align="flex-start" gap="1rem" mt="1.5rem" mb="2rem">
       <Box flexShrink={1} mt="2.5rem">
         <DepthBox depth={36} />
       </Box>
@@ -33,7 +33,6 @@ const AddCommentForm = () => {
         </Text>
         <Textarea
           resize="vertical"
-          minHeight="54px"
           focusBorderColor="brand.tertiary"
           bgColor="black"
           borderRadius="lg"
@@ -41,7 +40,9 @@ const AddCommentForm = () => {
           _hover={{
             borderColor: "grey.grey4",
           }}
+          _placeholder={{ color: "grey.grey4" }}
           id="content"
+          placeholder="What do you think? Comment @tokenID to refer to earlier messages"
           value={comment}
           onChange={(e) => setComment(e.target.value)}
         />

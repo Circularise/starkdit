@@ -1,13 +1,17 @@
 import { Container, Flex, Heading } from "@chakra-ui/react";
+import { useStarknet } from "@starknet-react/core";
 import type { NextPage } from "next";
-import { AddPostForm, PostCard, Sidebar } from "~/components/UI";
+import { AddPostForm, PostCard, Sidebar, TopBar } from "~/components/UI";
 
 const Home: NextPage = () => {
+  const { account } = useStarknet();
+
   return (
     <div>
-      <Sidebar />
-      <Container maxW="3xl" pt="3rem">
-        <AddPostForm />
+      {account ? <Sidebar /> : <TopBar />}
+
+      <Container maxW="3xl">
+        {account ? <AddPostForm /> : null}
         <Heading as="h1" mt="3rem" mb="1.5rem">
           Freshest posts
         </Heading>

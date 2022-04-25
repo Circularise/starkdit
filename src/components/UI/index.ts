@@ -5,3 +5,5 @@ export { default as ReplyNumber } from "./ReplyNumber";
 export { default as PostHeader } from "./PostHeader";
 export { default as DepthBox } from "./DepthBox";
 export { default as Comment } from "./Comment";
+export { default as ConnectWalletButton } from "./ConnectWalletButton";
+export { default as TopBar } from "./TopBar";

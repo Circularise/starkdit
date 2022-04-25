@@ -3,6 +3,7 @@ import { extendTheme, type ThemeConfig } from "@chakra-ui/react";
 // 2. Extend the theme to include custom colors, fonts, etc
 const colors = {
   grey: {
+    grey0: "#0E0E0E",
     grey1: "#1E1E20",
     grey2: "#38383C",
     grey3: "#5A595C",

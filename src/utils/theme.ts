@@ -8,6 +8,10 @@ const colors = {
     grey3: "#5A595C",
     grey4: "#828282",
   },
+  brand: {
+    tertiary: "#566EEF",
+    secondary: "#FFC572",
+  },
   gray: {
     // same as grey1, to override global styles
     800: "#1E1E20",

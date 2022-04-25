@@ -1,9 +1,17 @@
-import { VStack, Box, Heading, Flex } from "@chakra-ui/react";
+import { VStack, Box, Heading, Flex, Text } from "@chakra-ui/react";
 import { Post } from "~/schema/forum_structs";
 
 const PostCard = ({ author, title, body, blockNumber }: Post) => {
   return (
-    <VStack align="flex-start" p="20px" spacing="1rem" bgColor="grey.grey2">
+    <Flex
+      direction="column"
+      align="flex-start"
+      p="20px"
+      gap="1rem"
+      bgColor="grey.grey2"
+      borderRadius="lg"
+      width="100%"
+    >
       <Flex gap="1rem" width="100%">
         <Box
           bgColor={"silver"}
@@ -14,12 +22,14 @@ const PostCard = ({ author, title, body, blockNumber }: Post) => {
         <Box>{author}</Box>
         <Box ml="auto">#{blockNumber}</Box>
       </Flex>
-      <Heading as="h2" fontSize="md">
+      <Heading as="h2" fontSize="md" mt="1rem">
         {title}
       </Heading>
       <Box>{body}</Box>
-      <Box>35 replies</Box>
-    </VStack>
+      <Box>
+        <Text color="brand.tertiary">35 replies</Text>
+      </Box>
+    </Flex>
   );
 };
 

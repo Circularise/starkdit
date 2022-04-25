@@ -10,7 +10,11 @@
   },
   "dependencies": {
     "@argent/get-starknet": "^3.0",
+    "@chakra-ui/react": "^1.8.8",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
     "@starknet-react/core": "^0.7.0",
+    "framer-motion": "^6",
     "next": "12.0.10",
     "react": "17.0.2",
     "react-dom": "17.0.2",

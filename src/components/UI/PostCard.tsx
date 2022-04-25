@@ -1,9 +1,8 @@
 import { Box, Heading, Flex, Text } from "@chakra-ui/react";
 import { Post } from "~/schema/forum_structs";
 import DepthBox from "./DepthBox";
-import ReplyNumber from "./ReplyNumber";
 
-const PostCard = ({ author, title, body, blockNumber }: Post) => {
+const PostCard = ({ author, body, blockNumber }: Post) => {
   return (
     <Flex
       direction="column"
@@ -13,14 +12,6 @@ const PostCard = ({ author, title, body, blockNumber }: Post) => {
       bgColor="grey.grey2"
       borderRadius="lg"
       width="100%"
-      cursor="pointer"
-      transition="box-shadow 0.2s ease-in, border-color 0.2s ease-in"
-      borderWidth="2px"
-      borderColor="transparent"
-      _hover={{
-        boxShadow: "2px 2px 26px #566EEF",
-        borderColor: "brand.tertiary",
-      }}
     >
       <Flex gap="1rem" width="100%" align="flex-start">
         <Box
@@ -30,15 +21,11 @@ const PostCard = ({ author, title, body, blockNumber }: Post) => {
           width="24px"
         />
         <Box>{author}</Box>
-        <DepthBox depth={blockNumber} />
+        <DepthBox depth={blockNumber} variant="small" />
       </Flex>
-      <Heading as="h3" fontSize="md">
-        {title}
-      </Heading>
       <Box>
         <Text>{body}</Text>
       </Box>
-      <ReplyNumber replyNumber={34} />
     </Flex>
   );
 };

@@ -2,7 +2,6 @@ import { Button, Flex, Heading, Input, Text, Textarea } from "@chakra-ui/react";
 import * as React from "react";
 
 const AddPostForm = () => {
-  const [newPostTitle, setNewPostTitle] = React.useState("");
   const [newPostContent, setNewPostContent] = React.useState("");
 
   const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
@@ -12,30 +11,7 @@ const AddPostForm = () => {
 
   return (
     <Flex direction="column" gap="0.5rem" as="form" onSubmit={handleSubmit}>
-      <Heading as="h2" fontSize="md">
-        Create your Post
-      </Heading>
-      <Text
-        color="grey.grey5"
-        fontWeight="bold"
-        fontSize="1rem"
-        as="label"
-        htmlFor="title"
-      >
-        Title
-      </Text>
-      <Input
-        focusBorderColor="brand.tertiary"
-        bgColor="black"
-        borderRadius="lg"
-        borderColor="grey.grey3"
-        _hover={{
-          borderColor: "grey.grey4",
-        }}
-        id="title"
-        value={newPostTitle}
-        onChange={(e) => setNewPostTitle(e.target.value)}
-      />
+      <Text mb="0.5rem">Create your post as: (user token id TODO)</Text>
       <Text
         color="grey.grey5"
         fontWeight="bold"
@@ -43,11 +19,11 @@ const AddPostForm = () => {
         as="label"
         htmlFor="content"
       >
-        Text (optional)
+        Your post
       </Text>
       <Textarea
         resize="vertical"
-        height="10rem"
+        height="8rem"
         focusBorderColor="brand.tertiary"
         bgColor="black"
         borderRadius="lg"

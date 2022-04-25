@@ -1,5 +1,4 @@
-import { number } from "starknet";
-import { getThreadFromIPFS, getPostFromIPFS } from "~/ipfs/ipfs_mock";
+import { getThreadFromIPFS, getPostFromIPFS, getThreadsFromIPFS } from "./../ipfs/ipfs_mock";
 export class Threads {
     threadId!: string;
     prevId: string | undefined;
@@ -57,14 +56,29 @@ export class Thread {
     }
 }
 
+export class Root {
+    threadsId!: string;
+    count!: number;
+
+    threadsCache: Threads | undefined
+
+    constructor(threadsId: string, count: number) {
+        this.threadsId = threadsId
+        this.count = count
+    }
+
+    getThreads(): Threads {
+        if (this.threadsCache === undefined) {
+            this.threadsCache = getThreadsFromIPFS(this.threadsId)
+        }
+
+        return this.threadsCache!
+    }
+}
+
 export interface Post {
     author: string;
     title: string;
     body: string;
     blockNumber: number;
-}
-
-export interface Root {
-    threadsId: string;
-    count: number;
 }

@@ -3,6 +3,7 @@ import type { NextPage } from "next";
 import { Comment, PostHeader, Sidebar } from "~/components/UI";
 import AddCommentForm from "~/components/UI/AddCommentForm";
 
+// This is in the scenario where we have replies to post
 const Post: NextPage = () => {
   return (
     <div>

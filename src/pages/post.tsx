@@ -1,6 +1,6 @@
 import { Container, Flex, Heading } from "@chakra-ui/react";
 import type { NextPage } from "next";
-import { AddPostForm, PostCard, Sidebar } from "~/components/UI";
+import { AddPostForm, PostCard, PostHeader, Sidebar } from "~/components/UI";
 
 const Post: NextPage = () => {
   return (
@@ -13,6 +13,12 @@ const Post: NextPage = () => {
         bgColor="grey.grey2"
         borderRadius="lg"
       >
+        <PostHeader
+          author="Circularise"
+          title={`Isn't our designer Loes the best ever`}
+          body={`Of course she is, this wasn't a real question`}
+          blockNumber={0}
+        />
         <AddPostForm />
       </Container>
     </div>

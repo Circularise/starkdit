@@ -8,7 +8,7 @@ interface Props {
 
 const ReplyNumber = ({ replyNumber }: Props) => {
   return (
-    <Flex color="brand.tertiary" gap="0.75rem" mt="1rem">
+    <Flex color="brand.tertiary" gap="0.75rem" mt="0.5rem">
       <Box transform="rotate(180deg) translateY(10%)">
         <ArrowBack strokeWidth={2} size={24} />
       </Box>

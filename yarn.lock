@@ -1260,6 +1260,13 @@ ajv@^6.10.0, ajv@^6.12.4:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
+akar-icons@^1.9.15:
+  version "1.9.15"
+  resolved "https://registry.yarnpkg.com/akar-icons/-/akar-icons-1.9.15.tgz#dc5dbbc2e073fa9a2c5de092384a7c2fdcdc0679"
+  integrity sha512-b1ueiLzdo38mRtO0Z6flVvltqZMnCgkQ2yXsh/SkUICZ2eJV0f2ZRpInvMi7/b212JOXWL9h8HcK5Jb80VMyIg==
+  dependencies:
+    prop-types "^15.7.2"
+
 ansi-regex@^5.0.1:
   version "5.0.1"
   resolved "https://registry.npmjs.org/ansi-regex/-/ansi-regex-5.0.1.tgz"

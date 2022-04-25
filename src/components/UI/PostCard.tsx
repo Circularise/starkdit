@@ -1,4 +1,5 @@
 import { VStack, Box, Heading, Flex, Text } from "@chakra-ui/react";
+import { ArrowBack, ArrowForward } from "akar-icons";
 import { Post } from "~/schema/forum_structs";
 
 const PostCard = ({ author, title, body, blockNumber }: Post) => {
@@ -26,9 +27,12 @@ const PostCard = ({ author, title, body, blockNumber }: Post) => {
         {title}
       </Heading>
       <Box>{body}</Box>
-      <Box>
-        <Text color="brand.tertiary">35 replies</Text>
-      </Box>
+      <Flex color="brand.tertiary" gap="0.75rem">
+        <Box transform="rotate(180deg) translateY(10%)">
+          <ArrowBack strokeWidth={2} size={24} />
+        </Box>
+        <Text fontWeight={"bold"}>35 replies</Text>
+      </Flex>
     </Flex>
   );
 };

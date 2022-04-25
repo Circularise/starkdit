@@ -25,7 +25,14 @@ const Home: NextPage = () => {
 
   return (
     <div>
-      <h2>Posts</h2>
+      <h2>Wallet</h2>
+      <ConnectWallet />
+      <h2>Counter Contract</h2>
+      <p>Address: {counter?.address}</p>
+      <p>Value: {counterValue}</p>
+      <IncrementCounter />
+      <h2>Recent Transactions</h2>
+      <TransactionList />
     </div>
   );
 };

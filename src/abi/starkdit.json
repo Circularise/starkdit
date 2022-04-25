@@ -1,0 +1,76 @@
+[
+  {
+    "members": [
+      {
+        "name": "low",
+        "offset": 0,
+        "type": "felt"
+      },
+      {
+        "name": "high",
+        "offset": 1,
+        "type": "felt"
+      }
+    ],
+    "name": "Uint256",
+    "size": 2,
+    "type": "struct"
+  },
+  {
+    "members": [
+      {
+        "name": "posts",
+        "offset": 0,
+        "type": "Uint256"
+      },
+      {
+        "name": "ctr",
+        "offset": 2,
+        "type": "felt"
+      }
+    ],
+    "name": "Root",
+    "size": 3,
+    "type": "struct"
+  },
+  {
+    "inputs": [
+      {
+        "name": "post_body",
+        "type": "Uint256"
+      },
+      {
+        "name": "root_proof",
+        "type": "Root"
+      }
+    ],
+    "name": "post",
+    "outputs": [
+      {
+        "name": "post_cbor_len",
+        "type": "felt"
+      },
+      {
+        "name": "post_cbor",
+        "type": "felt*"
+      },
+      {
+        "name": "posts_cbor_len",
+        "type": "felt"
+      },
+      {
+        "name": "posts_cbor",
+        "type": "felt*"
+      },
+      {
+        "name": "root_cbor_len",
+        "type": "felt"
+      },
+      {
+        "name": "root_cbor",
+        "type": "felt*"
+      }
+    ],
+    "type": "function"
+  }
+]

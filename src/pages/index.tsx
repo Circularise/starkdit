@@ -1,4 +1,4 @@
-import { Container, Flex, Heading } from "@chakra-ui/react";
+import { Box, Container, Flex, Heading } from "@chakra-ui/react";
 import { useStarknet } from "@starknet-react/core";
 import type { NextPage } from "next";
 import { AddPostForm, PostCard, Sidebar, TopBar } from "~/components/UI";
@@ -64,7 +64,7 @@ const Home: NextPage = () => {
   // console.log(id);
 
   return (
-    <div>
+    <Box pb="3rem">
       {account ? <Sidebar /> : <TopBar />}
 
       <Container maxW="3xl">
@@ -85,9 +85,33 @@ const Home: NextPage = () => {
             body={`They are incredible. They figure out very hard stuff, interplanetary stuff. They could be working quicker though. :p `}
             blockNumber={1}
           />
+          <PostCard
+            author="Circularise"
+            title={`Isn't our designer Loes the best ever`}
+            body={`Of course she is, this wasn't a real question`}
+            blockNumber={2}
+          />
+          <PostCard
+            author="Circularise"
+            title={`Isn't our backend team wonderful?`}
+            body={`They are incredible. They figure out very hard stuff, interplanetary stuff. They could be working quicker though. :p `}
+            blockNumber={3}
+          />
+          <PostCard
+            author="Circularise"
+            title={`Isn't our designer Loes the best ever`}
+            body={`Of course she is, this wasn't a real question`}
+            blockNumber={4}
+          />
+          <PostCard
+            author="Circularise"
+            title={`Isn't our backend team wonderful?`}
+            body={`They are incredible. They figure out very hard stuff, interplanetary stuff. They could be working quicker though. :p `}
+            blockNumber={5}
+          />
         </Flex>
       </Container>
-    </div>
+    </Box>
   );
 };
 

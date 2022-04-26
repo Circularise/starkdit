@@ -5,6 +5,7 @@ import { AddPostForm, PostCard, Sidebar, TopBar } from "~/components/UI";
 import * as React from "react";
 import useIpfsFactory from "~/hooks/useIpfsFactory";
 import useIpfs from "~/hooks/useIpfs";
+import { useGetRootPosts } from "~/components/StarkditAPI";
 
 const Home: NextPage = () => {
   const { account } = useStarknet();
@@ -14,6 +15,8 @@ const Home: NextPage = () => {
   const [version, setVersion] = React.useState(null);
 
   React.useEffect(() => {
+    useGetRootPosts()
+
     if (!ipfs) return;
 
     const getVersion = async () => {

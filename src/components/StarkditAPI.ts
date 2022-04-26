@@ -10,10 +10,12 @@ export function getIPFSPrefix(): string | null {
     const { data, loading, error, refresh } = useStarknetCall({ contract: starkdit, method: 'get_prefix' })
 
     if (!account || error != undefined) {
+        console.log("[getIPFSPrefix] Starknet error? " + error)
         return null
     }
 
     if (loading) {
+        console.log("[getIPFSPrefix] Get result loading")
         // should wait a while???
         // maybe refresh()???
     }
@@ -22,22 +24,25 @@ export function getIPFSPrefix(): string | null {
 
     if (data != null) {
         prefix = data[0] as string
+        console.log("[getIPFSPrefix] prefix: " + prefix)
     }
 
     return prefix
 }
 
-export function getRootPosts(): Posts | null {
+export function useGetRootPosts(): Posts | null {
     const { account } = useStarknet()
     const { contract: starkdit } = useStarkditContract()
     const { data, loading, error, refresh } = useStarknetCall({ contract: starkdit, method: 'get_root' })
     const ipfsPrefix = getIPFSPrefix()
 
     if (!account || ipfsPrefix == null || error != undefined) {
+        console.log("[getRootPosts] Starknet error? " + error)
         return null
     }
 
     if (loading) {
+        console.log("[getRootPosts] Get result loading")
         // should wait a while???
         // maybe refresh()???
     }
@@ -46,6 +51,8 @@ export function getRootPosts(): Posts | null {
 
     if (data != null) {
         const rootHash = data[0]
+        console.log("[getRootPosts] Root hash: " + rootHash)
+
         // https://www.starknetjs.com/docs/API/contract
         // TODO root_hash is converted from a uint256 in cairo into a BigNumber
         // Not specified which implementation: 
@@ -53,7 +60,7 @@ export function getRootPosts(): Posts | null {
         // "bignumber.js
         // bn.js
         const rootId = ipfsPrefix + rootHash // should be something like rootHash.toHex()
-        rootPosts = getPostsFromIPFS(rootId)
+        // rootPosts = getPostsFromIPFS(rootId)
         // const root = getRootFromIPFS(rootId)
         // rootThreads = root.getThreads()
     }

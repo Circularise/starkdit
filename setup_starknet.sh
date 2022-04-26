@@ -13,4 +13,7 @@ unset STARKNET_NETWORK
 curl https://hackathon-4.starknet.io/feeder_gateway/is_alive
 
 # Check if the CLI works.
-starknet get_block
+# starknet get_block
+echo ""
+starknet  call --address 0x05779cb885e9208c93d77ff2fa669e4bf1f7a5c3ed4f5323663b45febe311351 \
+--abi src/abi/starkdit.json --function get_root            

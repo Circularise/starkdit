@@ -5,11 +5,13 @@ import { AddPostForm, PostCard, Sidebar, TopBar } from "~/components/UI";
 import * as React from "react";
 import useIpfsFactory from "~/hooks/useIpfsFactory";
 import useIpfs from "~/hooks/useIpfs";
-import { useGetRootPosts } from "~/components/StarkditAPI";
+import { useGetIPFSPrefix, useGetRootPosts } from "~/components/StarkditAPI";
+
 
 const Home: NextPage = () => {
   const { account } = useStarknet();
-  const rootPosts = useGetRootPosts();
+  useGetRootPosts();
+  useGetIPFSPrefix();
 
   const { ipfs, ipfsInitError } = useIpfsFactory();
   const id = useIpfs(ipfs, "id");

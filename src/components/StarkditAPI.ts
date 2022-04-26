@@ -2,7 +2,6 @@ import { useStarknet, useStarknetInvoke, useStarknetCall } from '@starknet-react
 import { useStarkditContract } from '~/hooks/starkdit'
 import { getPostsFromIPFS, getRootFromIPFS } from '~/ipfs/ipfs_mock'
 import { Posts } from '~/schema/forum_structs'
-import { BigNumberish } from 'starknet/dist/utils/number'
 import { Provider } from "starknet";
 
 const provider = new Provider({
@@ -11,7 +10,7 @@ const provider = new Provider({
     gatewayUrl: 'gateway',
 })
 
-export function useGetIPFSPrefix() {
+export function useGetIPFSPrefix(callback: (prefix: string) => any) {
     const { account } = useStarknet()
 
     /*
@@ -41,8 +40,9 @@ export function useGetIPFSPrefix() {
         contractAddress: "0x05779cb885e9208c93d77ff2fa669e4bf1f7a5c3ed4f5323663b45febe311351",
         entrypoint: "get_prefix"
     }).then(res => {
-        console.log("contract call result")
+        console.log("get prefix result")
         console.log(res.result)
+        callback(res.result[0])
     })
 }
 
@@ -88,11 +88,27 @@ export function useGetRootPosts() {
     }
     */
 
-    provider.callContract({
-        contractAddress: "0x05779cb885e9208c93d77ff2fa669e4bf1f7a5c3ed4f5323663b45febe311351",
-        entrypoint: "get_root"
-    }).then(res => {
-        console.log("contract call result")
-        console.log(res.result)
-    })
+    const prefixCallback = (prefix: string): any => {
+        provider.callContract({
+            contractAddress: "0x05779cb885e9208c93d77ff2fa669e4bf1f7a5c3ed4f5323663b45febe311351",
+            entrypoint: "get_root"
+        }).then(res => {
+            console.log("get root call result")
+            // console.log(res.result)
+
+            const rootHash = res.result // 4 big numbers
+            const rh1 = rootHash[0]
+            const rh2 = rootHash[1]
+            const rh3 = rootHash[2]
+            const rh4 = rootHash[3]
+
+            console.log("root hash 1: " + rh1)
+            console.log("root hash 2: " + rh3)
+            console.log("root hash 3: " + rh3)
+            console.log("root hash 4: " + rh4)
+
+        })
+    }
+
+    useGetIPFSPrefix(prefixCallback)
 }

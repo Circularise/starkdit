@@ -29,7 +29,7 @@ fn main() {
             .arg("--address")
             .arg(&args.address.to_owned())
             .arg("--abi")
-            .arg(&args.address.to_owned())
+            .arg(&args.abi.to_owned())
             .arg("--function")
             .arg("get_root")
             .stdout(Stdio::piped())

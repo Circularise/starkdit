@@ -9,14 +9,13 @@ import { useGetRootPosts } from "~/components/StarkditAPI";
 
 const Home: NextPage = () => {
   const { account } = useStarknet();
+  const rootPosts = useGetRootPosts();
 
   const { ipfs, ipfsInitError } = useIpfsFactory();
   const id = useIpfs(ipfs, "id");
   const [version, setVersion] = React.useState(null);
 
   React.useEffect(() => {
-    useGetRootPosts()
-
     if (!ipfs) return;
 
     const getVersion = async () => {

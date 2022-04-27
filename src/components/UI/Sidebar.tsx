@@ -13,7 +13,7 @@ const Sidebar = () => {
       pt="1.5rem"
     >
       <Box mx="auto" width="fit-content">
-        <Image src="/StarkditLogo.svg" alt="me" width="64" height="64" />
+        {/* <Image src="/StarkditLogo.svg" alt="me" width="64" height="64" /> */}
       </Box>
     </Box>
   );

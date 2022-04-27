@@ -1,19 +1,45 @@
-import { useStarknet, useStarknetInvoke, useStarknetCall } from '@starknet-react/core'
-import { useStarkditContract } from '~/hooks/starkdit'
-import { getPostsFromIPFS, getRootFromIPFS } from '~/ipfs/ipfs_mock'
-import { Posts } from '~/schema/forum_structs'
+import {
+  useStarknet,
+  useStarknetInvoke,
+  useStarknetCall,
+} from "@starknet-react/core";
+import { useStarkditContract } from "~/hooks/starkdit";
+import { getPostsFromIPFS, getRootFromIPFS } from "~/ipfs/ipfs_mock";
+import { Posts } from "~/schema/forum_structs";
 import { Provider } from "starknet";
 
 const provider = new Provider({
-    baseUrl: 'https://hackathon-4.starknet.io',
-    feederGatewayUrl: 'feeder_gateway',
-    gatewayUrl: 'gateway',
-})
+  baseUrl: "https://hackathon-4.starknet.io",
+  feederGatewayUrl: "feeder_gateway",
+  gatewayUrl: "gateway",
+});
+
+const fromHexString = (hexString) =>
+  new Uint8Array(
+    hexString
+      .slice(2)
+      .match(/.{1,2}/g)
+      .map((byte) => parseInt(byte, 16))
+  );
+
+const toHexString = (bytes) =>
+  bytes.reduce((str, byte) => str + byte.toString(16).padStart(2, "0"), "");
+
+const postprocessRootHash = (rootHash: any[]) => {
+  const array = rootHash
+    .slice(1)
+    .reduce(
+      (acc, curr) => new Uint8Array([...acc, ...fromHexString(curr)]),
+      []
+    );
+
+  console.log("array: ", array);
+};
 
 export function useGetIPFSPrefix(callback: (prefix: string) => any) {
-    const { account } = useStarknet()
+  const { account } = useStarknet();
 
-    /*
+  /*
     const { contract: starkdit } = useStarkditContract()
     const { data, loading, error, refresh } = useStarknetCall({ contract: starkdit, method: 'get_prefix' })
 
@@ -36,20 +62,23 @@ export function useGetIPFSPrefix(callback: (prefix: string) => any) {
     }
     */
 
-    provider.callContract({
-        contractAddress: "0x05779cb885e9208c93d77ff2fa669e4bf1f7a5c3ed4f5323663b45febe311351",
-        entrypoint: "get_prefix"
-    }).then(res => {
-        console.log("get prefix result")
-        console.log(res.result)
-        callback(res.result[0])
+  provider
+    .callContract({
+      contractAddress:
+        "0x05779cb885e9208c93d77ff2fa669e4bf1f7a5c3ed4f5323663b45febe311351",
+      entrypoint: "get_prefix",
     })
+    .then((res) => {
+      console.log("get prefix result");
+      console.log(res.result);
+      callback(res.result[0]);
+    });
 }
 
 export function useGetRootPosts() {
-    const { account } = useStarknet()
+  const { account } = useStarknet();
 
-    /*
+  /*
     const { contract: starkdit } = useStarkditContract()
     const { data, loading, error, refresh } = useStarknetCall({ contract: starkdit, method: 'get_root' })
     const ipfsPrefix = "prefix" //getIPFSPrefix()
@@ -88,27 +117,21 @@ export function useGetRootPosts() {
     }
     */
 
-    const prefixCallback = (prefix: string): any => {
-        provider.callContract({
-            contractAddress: "0x05779cb885e9208c93d77ff2fa669e4bf1f7a5c3ed4f5323663b45febe311351",
-            entrypoint: "get_root"
-        }).then(res => {
-            console.log("get root call result")
-            // console.log(res.result)
+  const prefixCallback = (prefix: string): any => {
+    provider
+      .callContract({
+        contractAddress:
+          "0x05779cb885e9208c93d77ff2fa669e4bf1f7a5c3ed4f5323663b45febe311351",
+        entrypoint: "get_root",
+      })
+      .then((res) => {
+        console.log("get root call result");
+        // console.log(res.result)
 
-            const rootHash = res.result // 4 big numbers
-            const rh1 = rootHash[0]
-            const rh2 = rootHash[1]
-            const rh3 = rootHash[2]
-            const rh4 = rootHash[3]
+        const rootHash = res.result; // 4 big numbers
+        postprocessRootHash(rootHash);
+      });
+  };
 
-            console.log("root hash 1: " + rh1)
-            console.log("root hash 2: " + rh3)
-            console.log("root hash 3: " + rh3)
-            console.log("root hash 4: " + rh4)
-
-        })
-    }
-
-    useGetIPFSPrefix(prefixCallback)
+  useGetIPFSPrefix(prefixCallback);
 }

@@ -14,7 +14,7 @@ const getIpfsFile = async (ipfs: any, fileId: string) => {
   console.log("here0");
   console.log("stream: ", stream);
 
-  for (const chunk of stream) {
+  for await (const chunk of stream) {
     console.log("chunk: ", chunk);
     // chunks of data are returned as a Buffer, convert it back to a string
     data += chunk.toString();
@@ -51,7 +51,7 @@ const useIpfsLogic = () => {
   const id = useIpfs(ipfs, "id");
   const [version, setVersion] = React.useState(null);
 
-  useGetRootPosts();
+  useGetRootPosts(ipfs);
 
   React.useEffect(() => {
     if (!ipfs) return;
@@ -62,7 +62,7 @@ const useIpfsLogic = () => {
 
       // const fileId = "QmPChd2hVbrJ6bfo3WBcTW4iZnpHm8TEzWkLHmLpXhF68A";
       // const fileId = "Qmf5iBQo99MKuih9jQBNJckWgGaH1AKBd3tVHjEEbFY1sv";
-      // getIpfsFile(ipfs, fileId)
+      // getIpfsFile(ipfs, fileId);
     };
 
     getVersion();

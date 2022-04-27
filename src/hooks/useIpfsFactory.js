@@ -1,5 +1,6 @@
 import { create } from "ipfs-core";
 import { useEffect, useState } from "react";
+import { keccak256 as hasher } from "@multiformats/sha3";
 
 let ipfs = null;
 const showConsole = false;
@@ -39,6 +40,8 @@ export default function useIpfsFactory() {
       showConsole && console.log("IPFS already started");
     } else if (window.ipfs && window.ipfs.enable) {
       showConsole && console.log("Found window.ipfs");
+      ipfs.hashers.addHasher(hasher);
+
       ipfs = await window.ipfs.enable({ commands: ["id"] });
     } else {
       try {

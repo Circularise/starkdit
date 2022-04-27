@@ -7,6 +7,11 @@ import { useStarkditContract } from "~/hooks/starkdit";
 import { getPostsFromIPFS, getRootFromIPFS } from "~/ipfs/ipfs_mock";
 import { Posts } from "~/schema/forum_structs";
 import { Provider } from "starknet";
+import { CID } from "multiformats/cid";
+import { keccak256 as hasher } from "@multiformats/sha3";
+import * as codec from "@ipld/dag-cbor";
+import * as Digest from "multiformats/hashes/digest";
+import * as React from "react";
 
 const provider = new Provider({
   baseUrl: "https://hackathon-4.starknet.io",
@@ -26,7 +31,7 @@ const toHexString = (bytes) =>
   bytes.reduce((str, byte) => str + byte.toString(16).padStart(2, "0"), "");
 
 const postprocessRootHash = (rootHash: any[]) => {
-  const array = rootHash
+  const hash = rootHash
     // remove first element which is just the length
     .slice(1)
     // build the Uint8Array(32)
@@ -35,7 +40,12 @@ const postprocessRootHash = (rootHash: any[]) => {
       []
     );
 
-  console.log("array: ", array);
+  const digest = Digest.create(hasher.code, hash);
+  const cid = CID.create(1, codec.code, digest);
+
+  return cid;
+
+  // console.log("cid: ", cid);
 };
 
 export function useGetIPFSPrefix(callback: (prefix: string) => any) {
@@ -77,7 +87,7 @@ export function useGetIPFSPrefix(callback: (prefix: string) => any) {
     });
 }
 
-export function useGetRootPosts() {
+export function useGetRootPosts(ipfs: any) {
   const { account } = useStarknet();
 
   /*
@@ -119,21 +129,28 @@ export function useGetRootPosts() {
     }
     */
 
-  const prefixCallback = (prefix: string): any => {
-    provider
-      .callContract({
+  React.useEffect(() => {
+    const fetchRootHash = async () => {
+      const res = await provider.callContract({
         contractAddress:
           "0x05779cb885e9208c93d77ff2fa669e4bf1f7a5c3ed4f5323663b45febe311351",
         entrypoint: "get_root",
-      })
-      .then((res) => {
-        console.log("get root call result");
-        // console.log(res.result)
-
-        const rootHash = res.result; // 4 big numbers
-        postprocessRootHash(rootHash);
       });
-  };
 
-  useGetIPFSPrefix(prefixCallback);
+      const rootHash = res.result; // 4 big numbers
+      const cid = postprocessRootHash(rootHash);
+
+      console.log("cid: ", cid);
+
+      const obj = await ipfs.dag.get(cid);
+
+      console.log("obj: ", obj);
+    };
+
+    if (ipfs) {
+      fetchRootHash();
+    }
+  }, [ipfs]);
+
+  // useGetIPFSPrefix(prefixCallback);
 }

@@ -2,6 +2,7 @@ import { useStarknet } from "@starknet-react/core";
 import useIpfs from "./useIpfs";
 import useIpfsFactory from "./useIpfsFactory";
 import * as React from "react";
+import { useGetRootPosts } from "./StarkditAPI";
 
 const getIpfsFile = async (ipfs: any, fileId: string) => {
   console.log("getting stuff ===============");
@@ -49,6 +50,8 @@ const useIpfsLogic = () => {
   const { ipfs, ipfsInitError } = useIpfsFactory();
   const id = useIpfs(ipfs, "id");
   const [version, setVersion] = React.useState(null);
+
+  // useGetRootPosts();
 
   React.useEffect(() => {
     if (!ipfs) return;

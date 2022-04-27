@@ -5,9 +5,13 @@ import { AddPostForm, PostCard, Sidebar, TopBar } from "~/components/UI";
 import * as React from "react";
 import useIpfsFactory from "~/hooks/useIpfsFactory";
 import useIpfs from "~/hooks/useIpfs";
+import { useGetIPFSPrefix, useGetRootPosts } from "~/components/StarkditAPI";
+
 
 const Home: NextPage = () => {
   const { account } = useStarknet();
+  useGetRootPosts();
+  useGetIPFSPrefix();
 
   const { ipfs, ipfsInitError } = useIpfsFactory();
   const id = useIpfs(ipfs, "id");
@@ -37,24 +41,24 @@ const Home: NextPage = () => {
       //   console.log(cid.toString());
       // }
 
-      console.log("getting stuff ===============");
+      // console.log("getting stuff ===============");
 
-      // const stream = ipfs.cat("QmPChd2hVbrJ6bfo3WBcTW4iZnpHm8TEzWkLHmLpXhF68A");
-      const stream = ipfs.cat("Qmf5iBQo99MKuih9jQBNJckWgGaH1AKBd3tVHjEEbFY1sv");
-      let data = "";
+      // // const stream = ipfs.cat("QmPChd2hVbrJ6bfo3WBcTW4iZnpHm8TEzWkLHmLpXhF68A");
+      // const stream = ipfs.cat("Qmf5iBQo99MKuih9jQBNJckWgGaH1AKBd3tVHjEEbFY1sv");
+      // let data = "";
 
-      console.log("here0");
-      console.log("stream: ", stream);
+      // console.log("here0");
+      // console.log("stream: ", stream);
 
-      for await (const chunk of stream) {
-        console.log("chunk: ", chunk);
-        // chunks of data are returned as a Buffer, convert it back to a string
-        data += chunk.toString();
-      }
+      // for await (const chunk of stream) {
+      //   console.log("chunk: ", chunk);
+      //   // chunks of data are returned as a Buffer, convert it back to a string
+      //   data += chunk.toString();
+      // }
 
-      console.log("here");
+      // console.log("here");
 
-      console.log("data: ", data);
+      // console.log("data: ", data);
     };
 
     getVersion();

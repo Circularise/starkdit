@@ -27,7 +27,9 @@ const toHexString = (bytes) =>
 
 const postprocessRootHash = (rootHash: any[]) => {
   const array = rootHash
+    // remove first element which is just the length
     .slice(1)
+    // build the Uint8Array(32)
     .reduce(
       (acc, curr) => new Uint8Array([...acc, ...fromHexString(curr)]),
       []

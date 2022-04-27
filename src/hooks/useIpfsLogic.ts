@@ -51,7 +51,7 @@ const useIpfsLogic = () => {
   const id = useIpfs(ipfs, "id");
   const [version, setVersion] = React.useState(null);
 
-  useGetRootPosts(ipfs);
+  const { handleSubmit } = useGetRootPosts(ipfs);
 
   React.useEffect(() => {
     if (!ipfs) return;
@@ -67,6 +67,8 @@ const useIpfsLogic = () => {
 
     getVersion();
   }, [ipfs]);
+
+  return { handleSubmit };
 };
 
 export default useIpfsLogic;

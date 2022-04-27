@@ -1,4 +1,4 @@
-import { Box, Container, Flex, Heading } from "@chakra-ui/react";
+import { Box, Button, Container, Flex, Heading } from "@chakra-ui/react";
 import { useStarknet } from "@starknet-react/core";
 import type { NextPage } from "next";
 import { AddPostForm, PostCard, Sidebar, TopBar } from "~/components/UI";
@@ -6,11 +6,13 @@ import useIpfsLogic from "~/hooks/useIpfsLogic";
 
 const Home: NextPage = () => {
   const { account } = useStarknet();
-  useIpfsLogic();
+  const { handleSubmit } = useIpfsLogic();
 
   return (
     <Box pb="3rem">
       {account ? <Sidebar /> : <TopBar />}
+
+      <Button onClick={handleSubmit}>post</Button>
 
       <Container maxW="3xl">
         {account ? <AddPostForm /> : null}

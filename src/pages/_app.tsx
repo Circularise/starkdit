@@ -9,14 +9,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const connectors = [new InjectedConnector()];
 
   return (
-    <StarknetProvider
-      autoConnect
-      connectors={
-        new Provider({
-          baseUrl: "https://hackathon-4.starknet.io",
-        })
-      }
-    >
+    <StarknetProvider autoConnect connectors={connectors}>
       <ChakraProvider theme={theme}>
         <NextHead>
           <title>StarkNet ❤️ React</title>

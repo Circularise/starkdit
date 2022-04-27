@@ -53,8 +53,13 @@ const preprocessUint8Array = (array: Uint8Array) => {
 };
 
 const postprocessCbor = (cbor: string[]) => {
+  const cbor64bits = cbor.map((str) => str + "0".repeat(18 - str.length));
+
+  console.log("cbor: ", cbor);
+  console.log("cbor64bits: ", cbor64bits);
+
   const postCBOR = fromHexString(
-    cbor.slice(1, 17).reduce((acc, curr) => acc + curr.slice(2), "")
+    cbor64bits.slice(1, 17).reduce((acc, curr) => acc + curr.slice(2), "")
   );
   // .reduce(
   //   (acc, curr) => new Uint8Array([...acc, ...fromHexString(curr)]),
@@ -62,7 +67,7 @@ const postprocessCbor = (cbor: string[]) => {
   // );
 
   const rootCBOR = fromHexString(
-    cbor.slice(18, 29).reduce((acc, curr) => acc + curr.slice(2), "")
+    cbor64bits.slice(18, 30).reduce((acc, curr) => acc + curr.slice(2), "")
   );
   // .reduce(
   //   (acc, curr) => new Uint8Array([...acc, ...fromHexString(curr)]),
@@ -229,17 +234,23 @@ export function useGetRootPosts(ipfs: any) {
       inputCodec: "dag-cbor",
       storeCodec: "dag-cbor",
       hashAlg: "keccak-256",
-      pin: true,
+      pin: false,
     });
     const rootCid = await ipfs.dag.put(rootCBOR, {
       inputCodec: "dag-cbor",
       storeCodec: "dag-cbor",
       hashAlg: "keccak-256",
-      pin: true,
+      pin: false,
     });
 
     console.log("postCid: ", postCid);
     console.log("rootCid: ", rootCid);
+
+    const res1 = await ipfs.pin.add(postCid);
+    const res2 = await ipfs.pin.add(rootCid);
+
+    console.log("res1: ", res1);
+    console.log("res2: ", res2);
   };
 
   // useGetIPFSPrefix(prefixCallback);

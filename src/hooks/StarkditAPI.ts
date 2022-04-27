@@ -16,12 +16,7 @@ import * as React from "react";
 const provider = new Provider();
 
 const fromHexString = (hexString: string) =>
-  new Uint8Array(
-    hexString
-      .slice(2)
-      .match(/.{1,2}/g)
-      .map((byte) => parseInt(byte, 16))
-  );
+  new Uint8Array(hexString.match(/.{1,2}/g).map((byte) => parseInt(byte, 16)));
 
 const toHexString = (bytes: Uint8Array) =>
   bytes.reduce((str, byte) => str + byte.toString(16).padStart(2, "0"), "");
@@ -32,7 +27,7 @@ const postprocessRootHash = (rootHash: any[]) => {
     .slice(1)
     // build the Uint8Array(32)
     .reduce(
-      (acc, curr) => new Uint8Array([...acc, ...fromHexString(curr)]),
+      (acc, curr) => new Uint8Array([...acc, ...fromHexString(curr.slice(2))]),
       []
     );
 
@@ -55,6 +50,26 @@ const preprocessUint8Array = (array: Uint8Array) => {
   console.log(hash);
 
   return hash;
+};
+
+const postprocessCbor = (cbor: string[]) => {
+  const postCBOR = fromHexString(
+    cbor.slice(1, 17).reduce((acc, curr) => acc + curr.slice(2), "")
+  );
+  // .reduce(
+  //   (acc, curr) => new Uint8Array([...acc, ...fromHexString(curr)]),
+  //   []
+  // );
+
+  const rootCBOR = fromHexString(
+    cbor.slice(18, 29).reduce((acc, curr) => acc + curr.slice(2), "")
+  );
+  // .reduce(
+  //   (acc, curr) => new Uint8Array([...acc, ...fromHexString(curr)]),
+  //   []
+  // );
+
+  return { postCBOR, rootCBOR };
 };
 
 export function useGetIPFSPrefix(callback: (prefix: string) => any) {
@@ -101,15 +116,24 @@ export function useGetRootPosts(ipfs: any) {
 
   const { contract: starkditContract } = useStarkditContract();
 
+  React.useEffect(() => {
+    console.log("ipfs: ", ipfs);
+  }, [ipfs]);
+
   const { data: starkditRootResult } = useStarknetCall({
     contract: starkditContract,
     method: "get_root",
     args: [],
   });
 
+  const { invoke: starkditInvokePost } = useStarknetInvoke({
+    contract: starkditContract,
+    method: "post",
+  });
+
   React.useEffect(() => {
     if (starkditRootResult) {
-      console.log("starkditRootResult: ", starkditRootResult);
+      // console.log("starkditRootResult: ", starkditRootResult);
     }
   }, [starkditRootResult]);
 
@@ -159,16 +183,16 @@ export function useGetRootPosts(ipfs: any) {
         entrypoint: "get_root",
       });
 
-      console.log("res: ", res);
+      // console.log("res: ", res);
 
       const rootHash = res.result; // 4 big numbers
       const cid = postprocessRootHash(rootHash);
-
-      console.log("cid: ", cid);
+      //
+      // console.log("cid: ", cid);
 
       const obj = await ipfs.dag.get(cid);
 
-      console.log("obj: ", obj);
+      // console.log("obj: ", obj);
     };
 
     if (ipfs) {
@@ -178,20 +202,44 @@ export function useGetRootPosts(ipfs: any) {
 
   const handleSubmit = async () => {
     const hashes = [
-      `${parseInt("0x4", 16)}`,
-      `${parseInt("0xfd77568ba1e6eb58", 16)}`,
-      `${parseInt("0x789227599e709a42", 16)}`,
-      `${parseInt("0x3bc76ea26786fb50", 16)}`,
-      `${parseInt("0xa92912aeb2603f30", 16)}`,
+      "0x4",
+      "0xfd77568ba1e6eb58",
+      "0x789227599e709a42",
+      "0x3bc76ea26786fb50",
+      "0xa92912aeb2603f30",
     ];
+
+    const hashesDecimals = hashes.map((hash) => `${parseInt(hash, 16)}`);
 
     const res = await provider.callContract({
       contractAddress: starkditContractAddress,
       entrypoint: "post",
-      calldata: hashes,
+      calldata: hashesDecimals,
     });
+    // await starkditInvokePost({ args: [hashesDecimals.slice(1)] });
 
     console.log("result: ", res);
+
+    const { postCBOR, rootCBOR } = postprocessCbor(res.result);
+
+    console.log("postCBOR: ", postCBOR);
+    console.log("rootCBOR: ", rootCBOR);
+
+    const postCid = await ipfs.dag.put(postCBOR, {
+      inputCodec: "dag-cbor",
+      storeCodec: "dag-cbor",
+      hashAlg: "keccak-256",
+      pin: true,
+    });
+    const rootCid = await ipfs.dag.put(rootCBOR, {
+      inputCodec: "dag-cbor",
+      storeCodec: "dag-cbor",
+      hashAlg: "keccak-256",
+      pin: true,
+    });
+
+    console.log("postCid: ", postCid);
+    console.log("rootCid: ", rootCid);
   };
 
   // useGetIPFSPrefix(prefixCallback);

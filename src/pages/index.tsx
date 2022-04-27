@@ -1,5 +1,8 @@
 import { Box, Button, Container, Flex, Heading } from "@chakra-ui/react";
-import { useStarknet } from "@starknet-react/core";
+import {
+  useStarknet,
+  useStarknetTransactionManager,
+} from "@starknet-react/core";
 import type { NextPage } from "next";
 import { AddPostForm, PostCard, Sidebar, TopBar } from "~/components/UI";
 import useIpfsLogic from "~/hooks/useIpfsLogic";
@@ -7,6 +10,7 @@ import useIpfsLogic from "~/hooks/useIpfsLogic";
 const Home: NextPage = () => {
   const { account } = useStarknet();
   const { handleSubmit } = useIpfsLogic();
+  const { transactions } = useStarknetTransactionManager();
 
   return (
     <Box pb="3rem">

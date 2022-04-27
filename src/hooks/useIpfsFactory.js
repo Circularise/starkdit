@@ -43,10 +43,15 @@ export default function useIpfsFactory() {
       ipfs.hashers.addHasher(hasher);
 
       ipfs = await window.ipfs.enable({ commands: ["id"] });
+
+      console.log("IPFS FOUND: ", ipfs);
     } else {
       try {
         showConsole && console.time("IPFS Started");
         ipfs = await create();
+        ipfs.hashers.addHasher(hasher);
+
+        console.log("IPFS CREATED: ", ipfs);
         showConsole && console.timeEnd("IPFS Started");
       } catch (error) {
         showConsole && console.error("IPFS init error:", error);

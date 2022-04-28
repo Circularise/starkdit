@@ -188,7 +188,7 @@ export function useGetRootPosts(ipfs: any) {
         entrypoint: "get_root",
       });
 
-      // console.log("res: ", res);
+      console.log("res: ", res);
 
       const rootHash = res.result; // 4 big numbers
       const cid = postprocessRootHash(rootHash);
@@ -206,15 +206,27 @@ export function useGetRootPosts(ipfs: any) {
   }, [ipfs]);
 
   const handleSubmit = async () => {
-    const hashes = [
-      "0x4",
-      "0xfd77568ba1e6eb58",
-      "0x789227599e709a42",
-      "0x3bc76ea26786fb50",
-      "0xa92912aeb2603f30",
-    ];
+    const postBody = {
+      title: "Title",
+      text: "Lorem ipsum something",
+    };
 
-    const hashesDecimals = hashes.map((hash) => `${parseInt(hash, 16)}`);
+    const postBodyCID = await ipfs.dag.put(postBody, {
+      hashAlg: "keccak-256",
+      pin: true,
+    });
+
+    console.log("postBodyCID: ", postBodyCID);
+
+    const postBodyCidHash = preprocessUint8Array(postBodyCID.multihash.digest);
+
+    console.log("postBodyCidHash: ", postBodyCidHash);
+
+    const hashesDecimals = postBodyCidHash.map(
+      (hash) => `${parseInt(hash, 16)}`
+    );
+
+    console.log("hashesDecimals: ", hashesDecimals);
 
     const res = await provider.callContract({
       contractAddress: starkditContractAddress,
@@ -229,28 +241,30 @@ export function useGetRootPosts(ipfs: any) {
 
     console.log("postCBOR: ", postCBOR);
     console.log("rootCBOR: ", rootCBOR);
+    console.log("postCBOR decoded: ", codec.decode(postCBOR));
+
+    const emptyObjectCid = await ipfs.dag.put(
+      {},
+      { hashAlg: "keccak-256", pin: true }
+    );
+
+    console.log(emptyObjectCid);
 
     const postCid = await ipfs.dag.put(postCBOR, {
       inputCodec: "dag-cbor",
       storeCodec: "dag-cbor",
       hashAlg: "keccak-256",
-      pin: false,
+      pin: true,
     });
     const rootCid = await ipfs.dag.put(rootCBOR, {
       inputCodec: "dag-cbor",
       storeCodec: "dag-cbor",
       hashAlg: "keccak-256",
-      pin: false,
+      pin: true,
     });
 
     console.log("postCid: ", postCid);
     console.log("rootCid: ", rootCid);
-
-    const res1 = await ipfs.pin.add(postCid);
-    const res2 = await ipfs.pin.add(rootCid);
-
-    console.log("res1: ", res1);
-    console.log("res2: ", res2);
   };
 
   // useGetIPFSPrefix(prefixCallback);

@@ -12,6 +12,7 @@ import { keccak256 as hasher } from "@multiformats/sha3";
 import * as codec from "@ipld/dag-cbor";
 import * as Digest from "multiformats/hashes/digest";
 import * as React from "react";
+var Parser = require("binary-parser-encoder").Parser;
 
 const provider = new Provider();
 
@@ -217,6 +218,16 @@ export function useGetRootPosts(ipfs: any) {
     });
 
     console.log("postBodyCID: ", postBodyCID);
+
+    const hashParser = new Parser().array("hashFelts", {
+      type: "uint64",
+      length: 4,
+    });
+
+    console.log(
+      "struct test: ",
+      hashParser.parse(postBodyCID.multihash.digest)
+    );
 
     const postBodyCidHash = preprocessUint8Array(postBodyCID.multihash.digest);
 

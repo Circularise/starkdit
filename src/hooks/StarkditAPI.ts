@@ -28,9 +28,11 @@ const postprocessRootHash = (rootHash: any[]) => {
     .slice(1)
     // build the Uint8Array(32)
     .reduce(
-      (acc, curr) => new Uint8Array([...acc, ...fromHexString(curr.slice(2))]),
+      (acc, curr) => new Uint8Array([...acc, ...hex.decode(curr.slice(2))]),
       []
     );
+
+  console.log("hash: ", hash);
 
   const digest = Digest.create(hasher.code, hash);
   const cid = CID.create(1, codec.code, digest);
@@ -54,26 +56,21 @@ const preprocessUint8Array = (array: Uint8Array) => {
 };
 
 const postprocessCbor = (cbor: string[]) => {
-  const cbor64bits = cbor.map((str) => str + "0".repeat(18 - str.length));
+  // pad cbor with 0s at the end if it requires it to make it 64bits
+  const cbor64bits = cbor.map(
+    (str) => str.slice(0, 2) + "0".repeat(18 - str.length) + str.slice(2)
+  );
 
   console.log("cbor: ", cbor);
   console.log("cbor64bits: ", cbor64bits);
 
-  const postCBOR = fromHexString(
+  const postCBOR = hex.decode(
     cbor64bits.slice(1, 17).reduce((acc, curr) => acc + curr.slice(2), "")
   );
-  // .reduce(
-  //   (acc, curr) => new Uint8Array([...acc, ...fromHexString(curr)]),
-  //   []
-  // );
 
-  const rootCBOR = fromHexString(
+  const rootCBOR = hex.decode(
     cbor64bits.slice(18, 30).reduce((acc, curr) => acc + curr.slice(2), "")
   );
-  // .reduce(
-  //   (acc, curr) => new Uint8Array([...acc, ...fromHexString(curr)]),
-  //   []
-  // );
 
   return { postCBOR, rootCBOR };
 };
@@ -117,14 +114,14 @@ export function useGetIPFSPrefix(callback: (prefix: string) => any) {
     });
 }
 
-export function useGetRootPosts(ipfs: any) {
+export function useGetRootPosts(ipfsRef: any) {
   const { account } = useStarknet();
 
   const { contract: starkditContract } = useStarkditContract();
 
   React.useEffect(() => {
-    console.log("ipfs: ", ipfs);
-  }, [ipfs]);
+    console.log("ipfs: ", ipfsRef.current);
+  }, [ipfsRef]);
 
   const { data: starkditRootResult } = useStarknetCall({
     contract: starkditContract,
@@ -182,6 +179,26 @@ export function useGetRootPosts(ipfs: any) {
     }
     */
 
+  const retrieveRoot = async () => {
+    console.log("retrieving");
+
+    const res = await provider.callContract({
+      contractAddress: starkditContractAddress,
+      entrypoint: "get_root",
+    });
+
+    console.log("res: ", res);
+
+    const rootHash = res.result; // 4 big numbers
+    const cid = postprocessRootHash(rootHash);
+
+    console.log("cid: ", cid);
+
+    const obj = await ipfsRef.current.dag.get(cid);
+
+    console.log("obj: ", obj);
+  };
+
   React.useEffect(() => {
     const fetchRootHash = async () => {
       const res = await provider.callContract({
@@ -196,23 +213,25 @@ export function useGetRootPosts(ipfs: any) {
       //
       // console.log("cid: ", cid);
 
-      const obj = await ipfs.dag.get(cid);
+      const obj = await ipfsRef.current.dag.get(cid);
 
-      // console.log("obj: ", obj);
+      console.log("obj: ", obj);
     };
 
-    if (ipfs) {
+    if (ipfsRef.current) {
       fetchRootHash();
     }
-  }, [ipfs]);
+  }, [ipfsRef]);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (text: string) => {
     const postBody = {
       title: "Title",
-      text: "Lorem ipsum something",
+      text,
     };
 
-    const postBodyCID = await ipfs.dag.put(postBody, {
+    console.log("postBody: ", postBody);
+
+    const postBodyCID = await ipfsRef.current.dag.put(postBody, {
       hashAlg: "keccak-256",
       pin: true,
     });
@@ -251,14 +270,14 @@ export function useGetRootPosts(ipfs: any) {
     console.log("postCBOR decoded: ", codec.decode(postCBOR));
     console.log("rootCBOR decoded: ", codec.decode(rootCBOR));
 
-    const emptyObjectCid = await ipfs.dag.put(
+    const emptyObjectCid = await ipfsRef.current.dag.put(
       {},
       { hashAlg: "keccak-256", pin: true }
     );
 
     console.log("emptyObjectCid: ", emptyObjectCid);
 
-    const postCid = await ipfs.dag.put(postCBOR, {
+    const postCid = await ipfsRef.current.dag.put(postCBOR, {
       inputCodec: "dag-cbor",
       storeCodec: "dag-cbor",
       hashAlg: "keccak-256",
@@ -267,7 +286,7 @@ export function useGetRootPosts(ipfs: any) {
 
     console.log("postCid: ", postCid);
 
-    const rootCid = await ipfs.dag.put(rootCBOR, {
+    const rootCid = await ipfsRef.current.dag.put(rootCBOR, {
       inputCodec: "dag-cbor",
       storeCodec: "dag-cbor",
       hashAlg: "keccak-256",
@@ -278,5 +297,5 @@ export function useGetRootPosts(ipfs: any) {
   };
 
   // useGetIPFSPrefix(prefixCallback);
-  return { handleSubmit };
+  return { handleSubmit, retrieveRoot };
 }

@@ -1,9 +1,8 @@
 import { create } from "ipfs-core";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { keccak256 as hasher } from "@multiformats/sha3";
 
-let ipfs = null;
-const showConsole = false;
+const showConsole = true;
 
 /*
  * A quick demo using React hooks to create an ipfs instance.
@@ -16,7 +15,9 @@ const showConsole = false;
  * it to be passed in.
  */
 export default function useIpfsFactory() {
-  const [isIpfsReady, setIpfsReady] = useState(Boolean(ipfs));
+  const ipfsRef = useRef();
+
+  const [isIpfsReady, setIpfsReady] = useState(Boolean(ipfsRef.current));
   const [ipfsInitError, setIpfsInitError] = useState(null);
 
   useEffect(() => {
@@ -25,43 +26,45 @@ export default function useIpfsFactory() {
     // Hence we delegate to a async fn rather than making the param an async fn.
 
     startIpfs();
-    return function cleanup() {
-      if (ipfs && ipfs.stop) {
-        showConsole && console.log("Stopping IPFS");
-        ipfs.stop().catch((err) => showConsole && console.error(err));
-        ipfs = null;
-        setIpfsReady(false);
-      }
-    };
+    // return function cleanup() {
+    //   if (ipfsRef.current && ipfsRef.current.stop) {
+    //     showConsole && console.log("Stopping IPFS");
+    //     ipfsRef.current
+    //       .stop()
+    //       .catch((err) => showConsole && console.error(err));
+    //     ipfsRef.current = null;
+    //     setIpfsReady(false);
+    //   }
+    // };
   }, []);
 
   async function startIpfs() {
-    if (ipfs) {
+    if (ipfsRef.current) {
       showConsole && console.log("IPFS already started");
     } else if (window.ipfs && window.ipfs.enable) {
       showConsole && console.log("Found window.ipfs");
-      ipfs.hashers.addHasher(hasher);
+      ipfsRef.current.hashers.addHasher(hasher);
 
-      ipfs = await window.ipfs.enable({ commands: ["id"] });
+      ipfsRef.current = await window.ipfs.enable({ commands: ["id"] });
 
-      console.log("IPFS FOUND: ", ipfs);
+      console.log("IPFS FOUND: ", ipfsRef.current);
     } else {
       try {
         showConsole && console.time("IPFS Started");
-        ipfs = await create();
-        ipfs.hashers.addHasher(hasher);
+        ipfsRef.current = await create();
+        ipfsRef.current.hashers.addHasher(hasher);
 
-        console.log("IPFS CREATED: ", ipfs);
+        console.log("IPFS CREATED: ", ipfsRef.current);
         showConsole && console.timeEnd("IPFS Started");
       } catch (error) {
         showConsole && console.error("IPFS init error:", error);
-        ipfs = null;
+        ipfsRef.current = null;
         setIpfsInitError(error);
       }
     }
 
-    setIpfsReady(Boolean(ipfs));
+    setIpfsReady(Boolean(ipfsRef.current));
   }
 
-  return { ipfs, isIpfsReady, ipfsInitError };
+  return { ipfsRef, isIpfsReady, ipfsInitError };
 }

@@ -9,17 +9,18 @@ import useIpfsLogic from "~/hooks/useIpfsLogic";
 
 const Home: NextPage = () => {
   const { account } = useStarknet();
-  const { handleSubmit } = useIpfsLogic();
+  const { handleSubmit, retrieveRoot } = useIpfsLogic();
   const { transactions } = useStarknetTransactionManager();
 
   return (
     <Box pb="3rem">
       {account ? <Sidebar /> : <TopBar />}
+      <Button onClick={retrieveRoot}>retrieve</Button>
 
-      <Button onClick={handleSubmit}>post</Button>
+      <Button onClick={() => handleSubmit("post")}>post</Button>
 
       <Container maxW="3xl">
-        {account ? <AddPostForm /> : null}
+        {account ? <AddPostForm handleSubmit={handleSubmit} /> : null}
         <Heading as="h1" mt="3rem" mb="1.5rem">
           Freshest posts
         </Heading>

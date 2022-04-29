@@ -2,14 +2,18 @@ import { Button, Flex, Text, Textarea } from "@chakra-ui/react";
 import { useStarknet } from "@starknet-react/core";
 import * as React from "react";
 
-const AddPostForm = () => {
+const AddPostForm = ({
+  handleSubmit,
+}: {
+  handleSubmit: (content: string) => void;
+}) => {
   const { account } = useStarknet();
 
   const [newPostContent, setNewPostContent] = React.useState("");
 
-  const handleSubmit = (e: React.FormEvent<HTMLDivElement>) => {
+  const handlePostSubmit = (e: React.FormEvent<HTMLDivElement>) => {
     e.preventDefault();
-    console.log("TODO: create new post");
+    handleSubmit(newPostContent);
   };
 
   return (
@@ -18,7 +22,7 @@ const AddPostForm = () => {
       gap="0.5rem"
       mt="3rem"
       as="form"
-      onSubmit={handleSubmit}
+      onSubmit={handlePostSubmit}
     >
       <Text mb="0.5rem">Create your post as: {account}</Text>
       <Text

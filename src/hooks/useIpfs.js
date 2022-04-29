@@ -14,18 +14,18 @@ const showConsole = false;
  *
  */
 
-export default function useIpfs(ipfs, cmd, opts) {
+export default function useIpfs(ipfsRef, cmd, opts) {
   const [res, setRes] = useState(null);
   useEffect(() => {
-    callIpfs(ipfs, cmd, setRes, opts);
-  }, [ipfs, cmd, opts]);
+    callIpfs(ipfsRef, cmd, setRes, opts);
+  }, [ipfsRef, cmd, opts]);
   return res;
 }
 
-async function callIpfs(ipfs, cmd, setRes, ...opts) {
-  if (!ipfs) return null;
+async function callIpfs(ipfsRef, cmd, setRes, ...opts) {
+  if (!ipfsRef.current) return null;
   showConsole && console.log(`Call ipfs.${cmd}`);
-  const ipfsCmd = getProperty(ipfs, cmd);
+  const ipfsCmd = getProperty(ipfsRef.current, cmd);
   const res = await ipfsCmd(...opts);
   showConsole && console.log(`Result ipfs.${cmd}`, res);
   setRes(res);

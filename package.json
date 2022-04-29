@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@47ng/codec": "^1.1.0",
     "@argent/get-starknet": "^3.0",
     "@chakra-ui/react": "^1.8.8",
     "@emotion/react": "^11",
@@ -19,10 +20,7 @@
     "@starknet-react/core": "^0.7.0",
     "akar-icons": "^1.9.15",
     "bignumber.js": "^9.0.2",
-    "binary-parser": "^2.0.2",
-    "binary-parser-encoder": "^1.5.3",
     "bn.js": "^5.2.0",
-    "byte-data": "^19.0.1",
     "dot-prop": "^7.2.0",
     "framer-motion": "^6",
     "ipfs-core": "^0.14.2",

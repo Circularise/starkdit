@@ -12,7 +12,7 @@ import { keccak256 as hasher } from "@multiformats/sha3";
 import * as codec from "@ipld/dag-cbor";
 import * as Digest from "multiformats/hashes/digest";
 import * as React from "react";
-var Parser = require("binary-parser-encoder").Parser;
+import { hex } from "@47ng/codec";
 
 const provider = new Provider();
 
@@ -219,22 +219,18 @@ export function useGetRootPosts(ipfs: any) {
 
     console.log("postBodyCID: ", postBodyCID);
 
-    const hashParser = new Parser().array("hashFelts", {
-      type: "uint64",
-      length: 4,
-    });
-
-    console.log(
-      "struct test: ",
-      hashParser.parse(postBodyCID.multihash.digest)
-    );
-
-    const postBodyCidHash = preprocessUint8Array(postBodyCID.multihash.digest);
+    const postBodyCidHash = [
+      "0x4",
+      ...(hex
+        .encode(postBodyCID.multihash.digest)
+        .match(/.{1,16}/g)
+        ?.map((hex) => `0x${hex}`) ?? []),
+    ];
 
     console.log("postBodyCidHash: ", postBodyCidHash);
 
-    const hashesDecimals = postBodyCidHash.map(
-      (hash) => `${parseInt(hash, 16)}`
+    const hashesDecimals = postBodyCidHash.map((hash) =>
+      BigInt(hash).toString(10)
     );
 
     console.log("hashesDecimals: ", hashesDecimals);
@@ -253,13 +249,14 @@ export function useGetRootPosts(ipfs: any) {
     console.log("postCBOR: ", postCBOR);
     console.log("rootCBOR: ", rootCBOR);
     console.log("postCBOR decoded: ", codec.decode(postCBOR));
+    console.log("rootCBOR decoded: ", codec.decode(rootCBOR));
 
     const emptyObjectCid = await ipfs.dag.put(
       {},
       { hashAlg: "keccak-256", pin: true }
     );
 
-    console.log(emptyObjectCid);
+    console.log("emptyObjectCid: ", emptyObjectCid);
 
     const postCid = await ipfs.dag.put(postCBOR, {
       inputCodec: "dag-cbor",
@@ -267,6 +264,9 @@ export function useGetRootPosts(ipfs: any) {
       hashAlg: "keccak-256",
       pin: true,
     });
+
+    console.log("postCid: ", postCid);
+
     const rootCid = await ipfs.dag.put(rootCBOR, {
       inputCodec: "dag-cbor",
       storeCodec: "dag-cbor",
@@ -274,7 +274,6 @@ export function useGetRootPosts(ipfs: any) {
       pin: true,
     });
 
-    console.log("postCid: ", postCid);
     console.log("rootCid: ", rootCid);
   };
 

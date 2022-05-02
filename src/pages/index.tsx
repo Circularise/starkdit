@@ -10,7 +10,7 @@ import * as React from "react";
 
 const Home: NextPage = () => {
   const { account } = useStarknet();
-  const { handleSubmit, retrieveRoot } = useIpfsLogic();
+  const { handleSubmit, retrieveRoot, ipfs } = useIpfsLogic();
   const { transactions } = useStarknetTransactionManager();
 
   const [animeGirl, setAnimeGirl] = React.useState(null);
@@ -22,10 +22,10 @@ const Home: NextPage = () => {
       setAnimeGirl(p_body);
     };
 
-    const timeout = setTimeout(() => fetchAnimeGirl(), 20 * 1000);
-
-    return () => clearTimeout(timeout);
-  }, [retrieveRoot]);
+    if (ipfs) {
+      fetchAnimeGirl();
+    }
+  }, [ipfs, retrieveRoot]);
 
   return (
     <Box pb="3rem">

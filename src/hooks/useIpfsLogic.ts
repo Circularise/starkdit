@@ -69,7 +69,7 @@ const useIpfsLogic = () => {
     getVersion();
   }, [ipfs]);
 
-  return { handleSubmit, retrieveRoot };
+  return { handleSubmit, retrieveRoot, ipfs };
 };
 
 export default useIpfsLogic;

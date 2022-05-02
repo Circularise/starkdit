@@ -123,14 +123,14 @@ export function useGetIPFSPrefix(callback: (prefix: string) => any) {
     });
 }
 
-export function useGetRootPosts(ipfsRef: any) {
+export function useGetRootPosts(ipfs: any) {
   const { account } = useStarknet();
 
   const { contract: starkditContract } = useStarkditContract();
 
   React.useEffect(() => {
-    console.log("ipfs: ", ipfsRef.current);
-  }, [ipfsRef]);
+    console.log("ipfs is: ", ipfs);
+  }, [ipfs]);
 
   const { data: starkditRootResult } = useStarknetCall({
     contract: starkditContract,
@@ -211,26 +211,26 @@ export function useGetRootPosts(ipfsRef: any) {
     //   "https://ipfs.io/api/v0/dag/get?arg=bafyrwif3b7jxi6flenamxzyzrjjb4mqw2a463m4q25osqxf5m4bbjr3rsa"
     // );
 
-    const obj = await ipfsRef.current.dag.get(cid);
+    const obj = await ipfs.dag.get(cid);
 
     console.log("obj: ", obj);
 
-    const cpost = await ipfsRef.current.dag.get(obj.value.cpost);
+    const cpost = await ipfs.dag.get(obj.value.cpost);
 
     console.log("cpost: ", cpost);
 
-    const p_body = await ipfsRef.current.dag.get(cpost.value.p_body);
+    const p_body = await ipfs.dag.get(cpost.value.p_body);
 
     console.log("p_body: ", p_body);
 
-    const p_prev = await ipfsRef.current.dag.get(obj.value.p_prev);
+    const p_prev = await ipfs.dag.get(obj.value.p_prev);
 
     console.log("p_prev: ", p_prev);
 
     // console.log("animeGrill: ", animeGrill);
 
     return p_body;
-  }, []);
+  }, [ipfs]);
 
   React.useEffect(() => {
     const fetchRootHash = async () => {
@@ -246,15 +246,15 @@ export function useGetRootPosts(ipfsRef: any) {
       //
       // console.log("cid: ", cid);
 
-      const obj = await ipfsRef.current.dag.get(cid);
+      const obj = await ipfs.dag.get(cid);
 
       console.log("obj: ", obj);
     };
 
-    if (ipfsRef.current) {
+    if (ipfs) {
       fetchRootHash();
     }
-  }, [ipfsRef]);
+  }, [ipfs]);
 
   const handleSubmit = async (text: string) => {
     const postBody = {
@@ -264,7 +264,7 @@ export function useGetRootPosts(ipfsRef: any) {
 
     console.log("postBody: ", postBody);
 
-    const postBodyCID = await ipfsRef.current.dag.put(postBody, {
+    const postBodyCID = await ipfs.dag.put(postBody, {
       hashAlg: "keccak-256",
       pin: true,
     });
@@ -303,14 +303,14 @@ export function useGetRootPosts(ipfsRef: any) {
     console.log("postCBOR decoded: ", codec.decode(postCBOR));
     console.log("rootCBOR decoded: ", codec.decode(rootCBOR));
 
-    const emptyObjectCid = await ipfsRef.current.dag.put(
+    const emptyObjectCid = await ipfs.dag.put(
       {},
       { hashAlg: "keccak-256", pin: true }
     );
 
     console.log("emptyObjectCid: ", emptyObjectCid);
 
-    const postCid = await ipfsRef.current.dag.put(postCBOR, {
+    const postCid = await ipfs.dag.put(postCBOR, {
       inputCodec: "dag-cbor",
       storeCodec: "dag-cbor",
       hashAlg: "keccak-256",
@@ -319,7 +319,7 @@ export function useGetRootPosts(ipfsRef: any) {
 
     console.log("postCid: ", postCid);
 
-    const rootCid = await ipfsRef.current.dag.put(rootCBOR, {
+    const rootCid = await ipfs.dag.put(rootCBOR, {
       inputCodec: "dag-cbor",
       storeCodec: "dag-cbor",
       hashAlg: "keccak-256",

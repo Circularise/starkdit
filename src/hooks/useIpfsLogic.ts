@@ -47,18 +47,18 @@ const useIpfsLogic = () => {
   // useGetRootPosts();
   // useGetIPFSPrefix();
 
-  const { ipfsRef, ipfsInitError } = useIpfsFactory();
+  const { ipfs, ipfsInitError } = useIpfsFactory();
 
-  const id = useIpfs(ipfsRef, "id");
+  const id = useIpfs(ipfs, "id");
   const [version, setVersion] = React.useState(null);
 
-  const { handleSubmit, retrieveRoot } = useGetRootPosts(ipfsRef);
+  const { handleSubmit, retrieveRoot } = useGetRootPosts(ipfs);
 
   React.useEffect(() => {
-    if (!ipfsRef.current) return;
+    if (!ipfs) return;
 
     const getVersion = async () => {
-      const nodeId = await ipfsRef.current?.version();
+      const nodeId = await ipfs?.version();
       setVersion(nodeId);
 
       // const fileId = "QmPChd2hVbrJ6bfo3WBcTW4iZnpHm8TEzWkLHmLpXhF68A";
@@ -67,7 +67,7 @@ const useIpfsLogic = () => {
     };
 
     getVersion();
-  }, [ipfsRef]);
+  }, [ipfs]);
 
   return { handleSubmit, retrieveRoot };
 };

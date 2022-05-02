@@ -34,9 +34,9 @@ const Home: NextPage = () => {
   return (
     <Box pb="3rem">
       {account ? <Sidebar /> : <TopBar />}
-      <Button onClick={fetchAnimeGirl}>retrieve</Button>
-
-      <Button onClick={() => handleSubmit("post")}>post</Button>
+      <Button onClick={fetchAnimeGirl} disabled={!ipfs}>
+        retrieve
+      </Button>
 
       <Container maxW="3xl">
         {account ? <AddPostForm handleSubmit={handleSubmit} /> : null}

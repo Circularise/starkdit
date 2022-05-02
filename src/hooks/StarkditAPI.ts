@@ -188,7 +188,7 @@ export function useGetRootPosts(ipfsRef: any) {
     }
     */
 
-  const retrieveRoot = async () => {
+  const retrieveRoot = React.useCallback(async () => {
     console.log("retrieving");
 
     const res = await provider.callContract({
@@ -203,19 +203,34 @@ export function useGetRootPosts(ipfsRef: any) {
 
     console.log("cid: ", cid);
 
-    const obj = await axios.post(
-      `https://ipfs.io/api/v0/dag/get?arg=${cid.toString()}`
-    );
+    // const obj = await axios.post(
+    //   `https://ipfs.io/api/v0/dag/get?arg=${cid.toString()}`
+    // );
 
-    const animeGrill = await axios.post(
-      "https://ipfs.io/api/v0/dag/get?arg=bafyrwif3b7jxi6flenamxzyzrjjb4mqw2a463m4q25osqxf5m4bbjr3rsa"
-    );
+    // const animeGrill = await axios.post(
+    //   "https://ipfs.io/api/v0/dag/get?arg=bafyrwif3b7jxi6flenamxzyzrjjb4mqw2a463m4q25osqxf5m4bbjr3rsa"
+    // );
 
-    // const obj = await ipfsRef.current.dag.get(cid);
+    const obj = await ipfsRef.current.dag.get(cid);
 
     console.log("obj: ", obj);
-    console.log("animeGrill: ", animeGrill);
-  };
+
+    const cpost = await ipfsRef.current.dag.get(obj.value.cpost);
+
+    console.log("cpost: ", cpost);
+
+    const p_body = await ipfsRef.current.dag.get(cpost.value.p_body);
+
+    console.log("p_body: ", p_body);
+
+    const p_prev = await ipfsRef.current.dag.get(obj.value.p_prev);
+
+    console.log("p_prev: ", p_prev);
+
+    // console.log("animeGrill: ", animeGrill);
+
+    return p_body;
+  }, []);
 
   React.useEffect(() => {
     const fetchRootHash = async () => {

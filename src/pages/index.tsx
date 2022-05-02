@@ -6,11 +6,26 @@ import {
 import type { NextPage } from "next";
 import { AddPostForm, PostCard, Sidebar, TopBar } from "~/components/UI";
 import useIpfsLogic from "~/hooks/useIpfsLogic";
+import * as React from "react";
 
 const Home: NextPage = () => {
   const { account } = useStarknet();
   const { handleSubmit, retrieveRoot } = useIpfsLogic();
   const { transactions } = useStarknetTransactionManager();
+
+  const [animeGirl, setAnimeGirl] = React.useState(null);
+
+  React.useEffect(() => {
+    const fetchAnimeGirl = async () => {
+      const p_body = await retrieveRoot();
+
+      setAnimeGirl(p_body);
+    };
+
+    const timeout = setTimeout(() => fetchAnimeGirl(), 20 * 1000);
+
+    return () => clearTimeout(timeout);
+  }, [retrieveRoot]);
 
   return (
     <Box pb="3rem">
@@ -25,6 +40,14 @@ const Home: NextPage = () => {
           Freshest posts
         </Heading>
         <Flex direction="column" gap="2rem">
+          {animeGirl ? (
+            <PostCard
+              author="Circularise"
+              title={`Anime grill`}
+              body={animeGirl.value.text}
+              blockNumber={0}
+            />
+          ) : null}
           <PostCard
             author="Circularise"
             title={`Isn't our designer Loes the best ever`}

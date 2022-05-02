@@ -37,10 +37,9 @@ const postprocessRootHash = (rootHash: any[]) => {
 
   const digest = Digest.create(hasher.code, hash);
   const cid = CID.create(1, codec.code, digest);
+  console.log("root cid: ", cid);
 
   return cid;
-
-  // console.log("cid: ", cid);
 };
 
 const preprocessUint8Array = (array: Uint8Array) => {
@@ -115,7 +114,7 @@ export function useGetRootPosts() {
   });
 
   const retrieveRoot = React.useCallback(async () => {
-    const showConsole = false;
+    const showConsole = true;
 
     showConsole && console.log("retrieving");
 

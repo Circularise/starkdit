@@ -4,7 +4,7 @@ import {
   useStarknetTransactionManager,
 } from "@starknet-react/core";
 import type { NextPage } from "next";
-import { AddPostForm, PostCard, Sidebar, TopBar } from "~/components/UI";
+import { AddPostForm, PostCard, Sidebar, TopBar } from "~/components";
 import * as React from "react";
 import { useGetRootPosts } from "~/hooks/StarkditAPI";
 import { useIpfs } from "~/contexts/ipfsContext";

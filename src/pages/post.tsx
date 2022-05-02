@@ -1,7 +1,7 @@
 import { Container, Flex } from "@chakra-ui/react";
 import type { NextPage } from "next";
-import { Comment, PostHeader, Sidebar } from "~/components/UI";
-import AddCommentForm from "~/components/UI/AddCommentForm";
+import { Comment, PostHeader, Sidebar } from "~/components";
+import AddCommentForm from "~/components/AddCommentForm";
 
 // This is in the scenario where we have replies to post
 const Post: NextPage = () => {

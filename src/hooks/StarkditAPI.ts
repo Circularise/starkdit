@@ -5,7 +5,6 @@ import {
 } from "@starknet-react/core";
 import { starkditContractAddress, useStarkditContract } from "~/hooks/starkdit";
 import { getPostsFromIPFS, getRootFromIPFS } from "~/ipfs/ipfs_mock";
-import { Posts } from "~/schema/forum_structs";
 import { Provider } from "starknet";
 import { CID } from "multiformats/cid";
 import { keccak256 as hasher } from "@multiformats/sha3";

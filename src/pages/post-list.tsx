@@ -1,6 +1,6 @@
 import { Container, Flex, Heading } from "@chakra-ui/react";
 import type { NextPage } from "next";
-import { AddPostForm, PostCard, Sidebar } from "~/components/UI";
+import { AddPostForm, PostCard, Sidebar } from "~/components";
 
 // This is the page which corresponds to having post + replies
 const PostList: NextPage = () => {

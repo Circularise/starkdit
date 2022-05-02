@@ -19,6 +19,7 @@
     "@multiformats/sha3": "^2.0.8",
     "@starknet-react/core": "^0.7.0",
     "akar-icons": "^1.9.15",
+    "axios": "^0.27.2",
     "bignumber.js": "^9.0.2",
     "bn.js": "^5.2.0",
     "dot-prop": "^7.2.0",

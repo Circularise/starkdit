@@ -13,6 +13,15 @@ import * as codec from "@ipld/dag-cbor";
 import * as Digest from "multiformats/hashes/digest";
 import * as React from "react";
 import { hex } from "@47ng/codec";
+import axios from "axios";
+
+const infuraAuthHeader = {
+  Authorization: `Basic ${btoa(
+    process.env.NEXT_PUBLIC_INFURA_PROJECT_ID +
+      ":" +
+      process.env.NEXT_PUBLIC_INFURA_PROJECT_SECRET
+  )}`,
+};
 
 const provider = new Provider();
 
@@ -194,9 +203,18 @@ export function useGetRootPosts(ipfsRef: any) {
 
     console.log("cid: ", cid);
 
-    const obj = await ipfsRef.current.dag.get(cid);
+    const obj = await axios.post(
+      `https://ipfs.io/api/v0/dag/get?arg=${cid.toString()}`
+    );
+
+    const animeGrill = await axios.post(
+      "https://ipfs.io/api/v0/dag/get?arg=bafyrwif3b7jxi6flenamxzyzrjjb4mqw2a463m4q25osqxf5m4bbjr3rsa"
+    );
+
+    // const obj = await ipfsRef.current.dag.get(cid);
 
     console.log("obj: ", obj);
+    console.log("animeGrill: ", animeGrill);
   };
 
   React.useEffect(() => {

@@ -16,14 +16,6 @@ import { hex } from "@47ng/codec";
 import axios from "axios";
 import { useIpfs } from "~/contexts/ipfsContext";
 
-const infuraAuthHeader = {
-  Authorization: `Basic ${btoa(
-    process.env.NEXT_PUBLIC_INFURA_PROJECT_ID +
-      ":" +
-      process.env.NEXT_PUBLIC_INFURA_PROJECT_SECRET
-  )}`,
-};
-
 const provider = new Provider();
 
 const fromHexString = (hexString: string) =>

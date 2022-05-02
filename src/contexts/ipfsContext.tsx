@@ -1,5 +1,5 @@
 import * as React from "react";
-import useIpfsLogic from "~/hooks/useIpfsLogic";
+import useIpfsFactory from "~/hooks/useIpfsFactory";
 
 // create context
 const IpfsContext = React.createContext(undefined);
@@ -9,9 +9,7 @@ interface Props {
 }
 
 const IpfsContextProvider = ({ children }: Props) => {
-  const { ipfs } = useIpfsLogic();
-
-  console.log("in context, ipfs: ", ipfs);
+  const { ipfs, ipfsInitError } = useIpfsFactory();
 
   return (
     // the Provider gives access to the context to its children

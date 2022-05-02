@@ -192,45 +192,37 @@ export function useGetRootPosts() {
     */
 
   const retrieveRoot = React.useCallback(async () => {
-    console.log("retrieving");
+    const showConsole = false;
+
+    showConsole && console.log("retrieving");
 
     const res = await provider.callContract({
       contractAddress: starkditContractAddress,
       entrypoint: "get_root",
     });
 
-    console.log("res: ", res);
+    showConsole && console.log("res: ", res);
 
     const rootHash = res.result; // 4 big numbers
     const cid = postprocessRootHash(rootHash);
 
-    console.log("cid: ", cid);
-
-    // const obj = await axios.post(
-    //   `https://ipfs.io/api/v0/dag/get?arg=${cid.toString()}`
-    // );
-
-    // const animeGrill = await axios.post(
-    //   "https://ipfs.io/api/v0/dag/get?arg=bafyrwif3b7jxi6flenamxzyzrjjb4mqw2a463m4q25osqxf5m4bbjr3rsa"
-    // );
+    showConsole && console.log("cid: ", cid);
 
     const root = await ipfs.dag.get(cid);
 
-    console.log("root: ", root);
+    showConsole && console.log("root: ", root);
 
     const cpost = await ipfs.dag.get(root.value.cpost);
 
-    console.log("cpost: ", cpost);
+    showConsole && console.log("cpost: ", cpost);
 
     const p_body = await ipfs.dag.get(cpost.value.p_body);
 
-    console.log("p_body: ", p_body);
+    showConsole && console.log("p_body: ", p_body);
 
     const p_prev = await ipfs.dag.get(root.value.p_prev);
 
-    console.log("p_prev: ", p_prev);
-
-    // console.log("animeGrill: ", animeGrill);
+    showConsole && console.log("p_prev: ", p_prev);
 
     return p_body;
   }, [ipfs]);

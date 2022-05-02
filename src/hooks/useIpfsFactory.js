@@ -17,7 +17,6 @@ const showConsole = true;
 export default function useIpfsFactory() {
   const [ipfs, setIpfs] = React.useState(null);
 
-  const [isIpfsReady, setIpfsReady] = useState(Boolean(ipfs));
   const [ipfsInitError, setIpfsInitError] = useState(null);
 
   useEffect(() => {
@@ -33,7 +32,6 @@ export default function useIpfsFactory() {
     //       .stop()
     //       .catch((err) => showConsole && console.error(err));
     //     setIpfs(null);
-    //     setIpfsReady(false);
     //   }
     // };
   }, []);
@@ -64,9 +62,7 @@ export default function useIpfsFactory() {
         setIpfsInitError(error);
       }
     }
-
-    setIpfsReady(Boolean(ipfs));
   }
 
-  return { ipfs, isIpfsReady, ipfsInitError };
+  return { ipfs, ipfsInitError };
 }

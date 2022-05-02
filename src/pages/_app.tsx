@@ -4,6 +4,7 @@ import { InjectedConnector, StarknetProvider } from "@starknet-react/core";
 import { ChakraProvider } from "@chakra-ui/react";
 import theme from "~/utils/theme";
 import { Provider } from "starknet";
+import { IpfsContextProvider } from "~/contexts/ipfsContext";
 
 function MyApp({ Component, pageProps }: AppProps) {
   const connectors = [new InjectedConnector()];
@@ -11,10 +12,12 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <StarknetProvider autoConnect connectors={connectors}>
       <ChakraProvider theme={theme}>
-        <NextHead>
-          <title>StarkNet ❤️ React</title>
-        </NextHead>
-        <Component {...pageProps} />
+        <IpfsContextProvider>
+          <NextHead>
+            <title>StarkNet ❤️ React</title>
+          </NextHead>
+          <Component {...pageProps} />
+        </IpfsContextProvider>
       </ChakraProvider>
     </StarknetProvider>
   );

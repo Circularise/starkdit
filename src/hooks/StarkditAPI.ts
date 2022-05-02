@@ -14,6 +14,7 @@ import * as Digest from "multiformats/hashes/digest";
 import * as React from "react";
 import { hex } from "@47ng/codec";
 import axios from "axios";
+import { useIpfs } from "~/contexts/ipfsContext";
 
 const infuraAuthHeader = {
   Authorization: `Basic ${btoa(
@@ -123,8 +124,10 @@ export function useGetIPFSPrefix(callback: (prefix: string) => any) {
     });
 }
 
-export function useGetRootPosts(ipfs: any) {
+export function useGetRootPosts() {
   const { account } = useStarknet();
+  const ipfs = useIpfs();
+  // const ipfs = null;
 
   const { contract: starkditContract } = useStarkditContract();
 
@@ -211,11 +214,11 @@ export function useGetRootPosts(ipfs: any) {
     //   "https://ipfs.io/api/v0/dag/get?arg=bafyrwif3b7jxi6flenamxzyzrjjb4mqw2a463m4q25osqxf5m4bbjr3rsa"
     // );
 
-    const obj = await ipfs.dag.get(cid);
+    const root = await ipfs.dag.get(cid);
 
-    console.log("obj: ", obj);
+    console.log("root: ", root);
 
-    const cpost = await ipfs.dag.get(obj.value.cpost);
+    const cpost = await ipfs.dag.get(root.value.cpost);
 
     console.log("cpost: ", cpost);
 
@@ -223,7 +226,7 @@ export function useGetRootPosts(ipfs: any) {
 
     console.log("p_body: ", p_body);
 
-    const p_prev = await ipfs.dag.get(obj.value.p_prev);
+    const p_prev = await ipfs.dag.get(root.value.p_prev);
 
     console.log("p_prev: ", p_prev);
 

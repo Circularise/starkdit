@@ -19,22 +19,22 @@ const Home: NextPage = () => {
 
   const [animeGirl, setAnimeGirl] = React.useState(null);
 
+  const fetchAnimeGirl = React.useCallback(async () => {
+    const p_body = await retrieveRoot();
+
+    setAnimeGirl(p_body);
+  }, [retrieveRoot]);
+
   // React.useEffect(() => {
-  //   const fetchAnimeGirl = async () => {
-  //     const p_body = await retrieveRoot();
-
-  //     setAnimeGirl(p_body);
-  //   };
-
   //   if (ipfs) {
   //     fetchAnimeGirl();
   //   }
-  // }, [ipfs, retrieveRoot]);
+  // }, [ipfs, fetchAnimeGirl]);
 
   return (
     <Box pb="3rem">
       {account ? <Sidebar /> : <TopBar />}
-      <Button onClick={retrieveRoot}>retrieve</Button>
+      <Button onClick={fetchAnimeGirl}>retrieve</Button>
 
       <Button onClick={() => handleSubmit("post")}>post</Button>
 

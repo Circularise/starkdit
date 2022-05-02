@@ -4,7 +4,7 @@ import { Abi } from "starknet";
 import StarkditAbi from "~/abi/starkdit.json";
 
 export const starkditContractAddress =
-  "0x057126db1ba64f8f2eaef3ca12b4fde74c30e5c33963e93795cd086806159c24";
+  "0x07724599e2ca55aeb3956c622e8c1ba82dd2c518b99180da310a5432da956a4f";
 
 export function useStarkditContract() {
   return useContract({

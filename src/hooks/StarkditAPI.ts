@@ -2,6 +2,7 @@ import {
   useStarknet,
   useStarknetInvoke,
   useStarknetCall,
+  useStarknetTransactionManager,
 } from "@starknet-react/core";
 import { starkditContractAddress, useStarkditContract } from "~/hooks/starkdit";
 import { getPostsFromIPFS, getRootFromIPFS } from "~/ipfs/ipfs_mock";
@@ -14,6 +15,15 @@ import * as React from "react";
 import { hex } from "@47ng/codec";
 import axios from "axios";
 import { useIpfs } from "~/contexts/ipfsContext";
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+const POST_CBOR_EVENT_KEY =
+  "0x26c6d1d1411801c34186dccbbf411d984b25d44b537de2847ab2ce596c59b19";
+const ROOT_CBOR_EVENT_KEY =
+  "0x85cb918715d2ec89dc8ff4649dd62f5cb14e18b9f19d1a040264045d5c93fb";
 
 const provider = new Provider();
 
@@ -53,6 +63,15 @@ const preprocessUint8Array = (array: Uint8Array) => {
   console.log(hash);
 
   return hash;
+};
+
+const postprocessCborv2 = (cbor: string[]) => {
+  // pad cbor with 0s at the end if it requires it to make it 64bits
+  const cbor64bits = cbor.map(
+    (str) => str.slice(0, 2) + "0".repeat(18 - str.length) + str.slice(2)
+  );
+
+  return hex.decode(cbor64bits.reduce((acc, curr) => acc + curr.slice(2), ""));
 };
 
 const postprocessCbor = (cbor: string[]) => {
@@ -112,6 +131,14 @@ export function useGetRootPosts() {
     contract: starkditContract,
     method: "post",
   });
+
+  const { transactions } = useStarknetTransactionManager();
+
+  const transactionRef = React.useRef(transactions);
+
+  React.useEffect(() => {
+    transactionRef.current = transactions;
+  }, [transactions]);
 
   const retrieveRoot = React.useCallback(async () => {
     const showConsole = true;
@@ -209,11 +236,49 @@ export function useGetRootPosts() {
       entrypoint: "post",
       calldata: hashesDecimals,
     });
-    // await starkditInvokePost({ args: [hashesDecimals.slice(1)] });
+
+    const previousTransactionLength = transactionRef.current.length;
+
+    const res2 = await starkditInvokePost({ args: [hashesDecimals.slice(1)] });
+
+    while (
+      transactionRef.current.length === previousTransactionLength ||
+      !["PENDING", "ACCEPTED_ON_L2"].includes(
+        transactionRef.current[previousTransactionLength].status
+      )
+    ) {
+      // console.log(
+      //   "awaiting 500ms, tx: ",
+      //   transactionRef.current.length > previousTransactionLength &&
+      //     transactionRef.current[previousTransactionLength]
+      // );
+      await sleep(50);
+    }
 
     console.log("result: ", res);
+    console.log("result2: ", res2);
+    console.log("tx: ", transactionRef.current);
 
-    const { postCBOR, rootCBOR } = postprocessCbor(res.result);
+    const info = await provider.getTransactionReceipt({
+      txHash: transactionRef.current[previousTransactionLength].transactionHash,
+    });
+
+    console.log("info:", info);
+
+    const postCBOR_pre = info.events.find(
+      (event) => event.keys[0] === POST_CBOR_EVENT_KEY
+    );
+    const rootCBOR_pre = info.events.find(
+      (event) => event.keys[0] === ROOT_CBOR_EVENT_KEY
+    );
+
+    console.log("postCBOR_pre:", postCBOR_pre);
+    console.log("rootCBOR_pre:", rootCBOR_pre);
+
+    const postCBOR = postprocessCborv2(postCBOR_pre?.data.slice(1));
+    const rootCBOR = postprocessCborv2(rootCBOR_pre?.data.slice(1));
+
+    // const { postCBOR, rootCBOR } = postprocessCbor(res.result);
 
     console.log("postCBOR: ", postCBOR);
     console.log("rootCBOR: ", rootCBOR);

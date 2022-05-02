@@ -19,17 +19,17 @@ const Home: NextPage = () => {
 
   const [animeGirl, setAnimeGirl] = React.useState(null);
 
-  React.useEffect(() => {
-    const fetchAnimeGirl = async () => {
-      const p_body = await retrieveRoot();
+  // React.useEffect(() => {
+  //   const fetchAnimeGirl = async () => {
+  //     const p_body = await retrieveRoot();
 
-      setAnimeGirl(p_body);
-    };
+  //     setAnimeGirl(p_body);
+  //   };
 
-    if (ipfs) {
-      fetchAnimeGirl();
-    }
-  }, [ipfs, retrieveRoot]);
+  //   if (ipfs) {
+  //     fetchAnimeGirl();
+  //   }
+  // }, [ipfs, retrieveRoot]);
 
   return (
     <Box pb="3rem">

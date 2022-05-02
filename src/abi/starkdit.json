@@ -1,5 +1,35 @@
 [
   {
+    "data": [
+      {
+        "name": "cbor_len",
+        "type": "felt"
+      },
+      {
+        "name": "cbor",
+        "type": "felt*"
+      }
+    ],
+    "keys": [],
+    "name": "PostCBOR",
+    "type": "event"
+  },
+  {
+    "data": [
+      {
+        "name": "cbor_len",
+        "type": "felt"
+      },
+      {
+        "name": "cbor",
+        "type": "felt*"
+      }
+    ],
+    "keys": [],
+    "name": "RootCBOR",
+    "type": "event"
+  },
+  {
     "inputs": [],
     "name": "constructor",
     "outputs": [],
@@ -61,24 +91,7 @@
       }
     ],
     "name": "post",
-    "outputs": [
-      {
-        "name": "post_cbor_len",
-        "type": "felt"
-      },
-      {
-        "name": "post_cbor",
-        "type": "felt*"
-      },
-      {
-        "name": "posts_cbor_len",
-        "type": "felt"
-      },
-      {
-        "name": "posts_cbor",
-        "type": "felt*"
-      }
-    ],
+    "outputs": [],
     "type": "function"
   }
 ]

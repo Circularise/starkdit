@@ -1,6 +1,7 @@
 import { Button, Flex, Text, Textarea } from "@chakra-ui/react";
 import { useStarknet } from "@starknet-react/core";
 import * as React from "react";
+import { useIpfs } from "~/contexts/ipfsContext";
 
 const AddPostForm = ({
   handleSubmit,
@@ -8,6 +9,7 @@ const AddPostForm = ({
   handleSubmit: (content: string) => void;
 }) => {
   const { account } = useStarknet();
+  const ipfs = useIpfs();
 
   const [newPostContent, setNewPostContent] = React.useState("");
 
@@ -54,6 +56,7 @@ const AddPostForm = ({
         ml="auto"
         fontSize="1rem"
         type="submit"
+        disabled={!ipfs}
       >
         Post
       </Button>

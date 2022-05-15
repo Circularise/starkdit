@@ -20,6 +20,8 @@ function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+const showConsole = true;
+
 const POST_CBOR_EVENT_KEY =
   "0x26c6d1d1411801c34186dccbbf411d984b25d44b537de2847ab2ce596c59b19";
 const ROOT_CBOR_EVENT_KEY =
@@ -140,9 +142,53 @@ export function useGetRootPosts() {
     transactionRef.current = transactions;
   }, [transactions]);
 
-  const retrieveRoot = React.useCallback(async () => {
-    const showConsole = true;
+  const getPbodyFromRoot = React.useCallback(
+    async (rootCid) => {
+      const root = await ipfs.dag.get(rootCid);
 
+      showConsole && console.log("root: ", root);
+
+      const cpost = await ipfs.dag.get(root.value.cpost);
+
+      return await ipfs.dag.get(cpost.value.p_body);
+    },
+    [ipfs]
+  );
+
+  const getPprevFromRoot = React.useCallback(
+    async (rootCid) => {
+      const root = await ipfs.dag.get(rootCid);
+
+      console.log("root in p_prev: ", root);
+      return await ipfs.dag.get(root.value.p_prev);
+    },
+    [ipfs]
+  );
+
+  const getContentFromRoot = React.useCallback(
+    async (rootCid) => {
+      const root = await ipfs.dag.get(rootCid);
+
+      showConsole && console.log("root: ", root);
+
+      const cpost = await ipfs.dag.get(root.value.cpost);
+
+      showConsole && console.log("cpost: ", cpost);
+
+      const p_body = await ipfs.dag.get(cpost.value.p_body);
+
+      showConsole && console.log("p_body: ", p_body);
+
+      const p_prev = await ipfs.dag.get(root.value.p_prev);
+
+      showConsole && console.log("p_prev: ", p_prev);
+
+      return { p_body, p_prev };
+    },
+    [ipfs]
+  );
+
+  const retrieveRoot = React.useCallback(async () => {
     showConsole && console.log("retrieving");
 
     const res = await provider.callContract({
@@ -157,24 +203,8 @@ export function useGetRootPosts() {
 
     showConsole && console.log("cid: ", cid);
 
-    const root = await ipfs.dag.get(cid);
-
-    showConsole && console.log("root: ", root);
-
-    const cpost = await ipfs.dag.get(root.value.cpost);
-
-    showConsole && console.log("cpost: ", cpost);
-
-    const p_body = await ipfs.dag.get(cpost.value.p_body);
-
-    showConsole && console.log("p_body: ", p_body);
-
-    const p_prev = await ipfs.dag.get(root.value.p_prev);
-
-    showConsole && console.log("p_prev: ", p_prev);
-
-    return p_body;
-  }, [ipfs]);
+    return cid;
+  }, [ipfs, getContentFromRoot]);
 
   React.useEffect(() => {
     const fetchRootHash = async () => {
@@ -312,5 +342,11 @@ export function useGetRootPosts() {
   };
 
   // useGetIPFSPrefix(prefixCallback);
-  return { handleSubmit, retrieveRoot };
+  return {
+    handleSubmit,
+    retrieveRoot,
+    getContentFromRoot,
+    getPbodyFromRoot,
+    getPprevFromRoot,
+  };
 }

@@ -12,29 +12,40 @@ import { useIpfs } from "~/contexts/ipfsContext";
 const Home: NextPage = () => {
   const { account } = useStarknet();
 
-  const { handleSubmit, retrieveRoot } = useGetRootPosts();
+  const { handleSubmit, retrieveRoot, getPbodyFromRoot, getPprevFromRoot } =
+    useGetRootPosts();
   const ipfs = useIpfs();
 
   const { transactions } = useStarknetTransactionManager();
 
-  const [animeGirl, setAnimeGirl] = React.useState(null);
+  const [postList, setPostList] = React.useState<any[]>([]);
 
-  const fetchAnimeGirl = React.useCallback(async () => {
-    const p_body = await retrieveRoot();
+  const fetchPosts = React.useCallback(
+    async (cid = null) => {
+      let rootCid = cid;
+      if (!rootCid) {
+        rootCid = await retrieveRoot();
+      }
 
-    setAnimeGirl(p_body);
-  }, [retrieveRoot]);
+      const p_body = await getPbodyFromRoot(rootCid);
+      setPostList((prevPosts) => [...prevPosts, p_body]);
 
-  // React.useEffect(() => {
-  //   if (ipfs) {
-  //     fetchAnimeGirl();
-  //   }
-  // }, [ipfs, fetchAnimeGirl]);
+      const p_prev = await getPprevFromRoot(rootCid);
+      fetchPosts(p_prev);
+    },
+    [retrieveRoot, getPbodyFromRoot, getPprevFromRoot]
+  );
+
+  React.useEffect(() => {
+    if (ipfs) {
+      fetchPosts();
+    }
+  }, [ipfs, fetchPosts]);
 
   return (
     <Box pb="3rem">
       {account ? <Sidebar /> : <TopBar />}
-      <Button onClick={fetchAnimeGirl} disabled={!ipfs}>
+      <Button onClick={() => fetchPosts()} disabled={!ipfs}>
         retrieve
       </Button>
 
@@ -44,14 +55,16 @@ const Home: NextPage = () => {
           Freshest posts
         </Heading>
         <Flex direction="column" gap="2rem">
-          {animeGirl ? (
+          {postList.map((post, index) => (
             <PostCard
+              key={index}
               author="Circularise"
               title={`Anime grill`}
-              body={animeGirl.value.text}
+              body={post.value.text}
               blockNumber={0}
             />
-          ) : null}
+          ))}
+
           <PostCard
             author="Circularise"
             title={`Isn't our designer Loes the best ever`}

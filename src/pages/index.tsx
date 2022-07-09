@@ -37,10 +37,10 @@ const Home: NextPage = () => {
   );
 
   React.useEffect(() => {
-    if (ipfs) {
+    if (ipfs && postList.length === 0) {
       fetchPosts();
     }
-  }, [ipfs, fetchPosts]);
+  }, [ipfs, postList, fetchPosts]);
 
   return (
     <Box pb="3rem">
